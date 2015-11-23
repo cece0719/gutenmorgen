@@ -1,15 +1,15 @@
 #!/bin/bash
 
-git pull
+TOMCATDIRNAME=tomcat
+TOMCATDIR=$HOME/apps/$TOMCATDIRNAME
 
-TOMCATDIR=/home/webservice/apps/tomcat
-
-mvn clean compile war:exploded
+SCRIPT=$(readlink -f "$0")
+SCRIPTPATH=$(dirname "$SCRIPT")
+WORKSPACE=$SCRIPTPATH
 
 $TOMCATDIR/bin/shutdown.sh
 
-PID=`ps -ef | grep "\/tomcat\/" | grep -v grep | awk '{print $2}'`
-
+PID=`ps -ef | grep "\/$TOMCATDIRNAME\/" | grep -v grep | awk '{print $2}'`
 CNT=1
 while [ "x$PID" != "x" ] ; do
         echo "Process Still exist. $PID"
@@ -20,8 +20,12 @@ while [ "x$PID" != "x" ] ; do
         echo "Waiting More..."
         let CNT=$CNT+1
         sleep 2
-        PID=`ps -ef | grep "\/tomcat\/" | grep -v grep | awk '{print $2}'`
+        PID=`ps -ef | grep "\/$TOMCATDIRNAME\/" | grep -v grep | awk '{print $2}'`
 done
 echo "Stop Sucessfully"
+
+git --work-tree=$WORKSPACE --git-dir=$WORKSPACE/.git pull
+
+mvn clean compile war:exploded
 
 $TOMCATDIR/bin/startup.sh
