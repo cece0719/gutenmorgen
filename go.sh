@@ -1,6 +1,6 @@
 #!/bin/bash
 
-svn up
+git pull
 
 TOMCATDIR=/home/webservice/apps/tomcat
 
