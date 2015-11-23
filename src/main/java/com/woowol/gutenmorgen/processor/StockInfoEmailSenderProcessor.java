@@ -3,7 +3,6 @@ package com.woowol.gutenmorgen.processor;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -20,32 +19,24 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woowol.gutenmorgen.processor.StockInfoEmailSenderProcessor.Parameter;
 
 @Service
-public class StockInfoEmailSenderProcessor implements Processor {
-
-	ObjectMapper mapper = new ObjectMapper();
-	
+public class StockInfoEmailSenderProcessor extends Processor<Parameter> {
 	public static final String LOSE = "패!배!의!";
 	public static final String WIN = "승!리!의!";
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void process(String parameter) throws Exception {
-		Map<String, Object> map = mapper.readValue(parameter, new TypeReference<Map<String, Object>>() {});
-		List<String> stockList = (List<String>) map.get("stockList");
-		List<String> emailList = (List<String>) map.get("emailList");
-		for (String stock : stockList) {
-			for (String email : emailList) {
+	public void process(Parameter parameter) throws Exception {
+		for (String stock : parameter.getStockList()) {
+			for (String email : parameter.getEmailList()) {
 				Sender.sendMail(email, printPrice(stock), "");
 			}
 		}
@@ -53,7 +44,7 @@ public class StockInfoEmailSenderProcessor implements Processor {
 	
 	private static String printPrice(String code) {
 		String result = "";
-		HttpClient httpClient = new DefaultHttpClient();
+		HttpClient httpClient = HttpClientBuilder.create().build();
 		HttpGet httpget = new HttpGet("http://finance.naver.com/search/searchList.nhn?query=" + code);
 		try {
 			result = httpClient.execute(httpget, new BasicResponseHandler() {
@@ -129,6 +120,24 @@ public class StockInfoEmailSenderProcessor implements Processor {
 			transport.connect("smtp.gmail.com", "smtptestking@gmail.com", "wjdqhfk898!");
 			transport.sendMessage(generateMailMessage, generateMailMessage.getAllRecipients());
 			transport.close();
+		}
+	}
+	
+	public static class Parameter {
+		private List<String> stockList;
+		private List<String> emailList;
+		
+		public List<String> getStockList() {
+			return stockList;
+		}
+		public void setStockList(List<String> stockList) {
+			this.stockList = stockList;
+		}
+		public List<String> getEmailList() {
+			return emailList;
+		}
+		public void setEmailList(List<String> emailList) {
+			this.emailList = emailList;
 		}
 	}
 }

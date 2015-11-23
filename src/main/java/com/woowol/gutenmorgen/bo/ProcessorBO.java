@@ -9,16 +9,16 @@ import com.woowol.gutenmorgen.processor.Processor;
 
 @Service
 public class ProcessorBO {
-	@Autowired private Map<String, Processor> processorMap;
+	@Autowired private Map<String, Processor<?>> processorMap;
 	
-	public Map<String, Processor> getProcessorMap() {
+	public Map<String, Processor<?>> getProcessorMap() {
 		return processorMap;
 	}
 
 	public void process(String processorName, String parameter) {
 		try {
-			Processor processor = processorMap.get(processorName);
-			processor.process(parameter);
+			Processor<?> processor = processorMap.get(processorName);
+			processor.processByStringParameter(parameter);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
