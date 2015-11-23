@@ -1,12 +1,5 @@
 #!/bin/bash
 
-TOMCATDIRNAME=tomcat
-TOMCATDIR=$HOME/apps/$TOMCATDIRNAME
-
-SCRIPT=$(readlink -f "$0")
-SCRIPTPATH=$(dirname "$SCRIPT")
-WORKSPACE=$SCRIPTPATH
-
 $TOMCATDIR/bin/shutdown.sh
 
 PID=`ps -ef | grep "\/$TOMCATDIRNAME\/" | grep -v grep | awk '{print $2}'`
