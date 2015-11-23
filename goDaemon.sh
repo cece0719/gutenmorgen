@@ -1,10 +1,12 @@
 #!/bin/bash
 
-TOMCATDIRNAME=tomcat
-TOMCATDIR=$HOME/apps/$TOMCATDIRNAME
+export TOMCATDIRNAME=tomcat
+export TOMCATDIR=$HOME/apps/$TOMCATDIRNAME
 
-SCRIPT=$(readlink -f "$0")
-SCRIPTPATH=$(dirname "$SCRIPT")
-WORKSPACE=$SCRIPTPATH
+export SCRIPT=$(readlink -f "$0")
+export SCRIPTPATH=$(dirname "$SCRIPT")
+export WORKSPACE=$SCRIPTPATH
+
+
 
 /home/webservice/workspace/gutenmorgen/go.sh >/dev/null &
