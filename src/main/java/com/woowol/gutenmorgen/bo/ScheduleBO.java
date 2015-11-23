@@ -30,7 +30,7 @@ public class ScheduleBO {
 	@PostConstruct
 	public void postCon() {
 		readFromFileScheduleMap();
-		//scheduleCheckThread.start();
+		scheduleCheckThread.start();
 	}
 
 	@PreDestroy
