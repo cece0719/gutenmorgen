@@ -53,7 +53,7 @@ public class ScheduleBO {
 		Schedule schedule = new Schedule();
 		schedule.setScheduleKey(param.get("sheduleKey"));
 		schedule = scheduleDAO.selectOne(schedule);
-		schedule.setName(param.get("newName"));
+		schedule.setName(param.get("name"));
 		schedule.setJob(jobBO.getJobByKey(param.get("jobKey")));
 		schedule.setTimeRegex(param.get("timeRegex"));
 		scheduleDAO.update(schedule);
