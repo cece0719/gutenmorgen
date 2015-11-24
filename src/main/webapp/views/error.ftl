@@ -3,6 +3,6 @@
 <title>에러</title>
 </head>
 <body>
-에러에러
+[{rtnCode!}]{rtnMsg!}
 </body>
 </html>
