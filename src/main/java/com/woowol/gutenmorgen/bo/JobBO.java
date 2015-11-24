@@ -1,88 +1,58 @@
 package com.woowol.gutenmorgen.bo;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.woowol.gutenmorgen.dao.JobDAO;
 import com.woowol.gutenmorgen.model.Job;
 
 @Service
 public class JobBO {
-	private static final String JOB_MAP_FILE_NAME = "jobMap.data";
-	
-	private Map<String, Job> jobMap = new HashMap<>();
+	@Autowired private JobDAO JobDAO;
 	@Autowired private ProcessorBO processorBO;
 	
-	@PostConstruct
-	public void postCon() {
-		readFromFileJobMap();
+	public List<Job> getJobList() {
+		return JobDAO.selectList();
 	}
 
-	@PreDestroy
-	public void preDes() {
-		writeToFileJobMap();
-	}
-	
-	@SuppressWarnings({ "unchecked", "resource" })
-	private void readFromFileJobMap() {
-		try {
-			ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(JOB_MAP_FILE_NAME));
-			jobMap = (Map<String, Job>) objectInputStream.readObject();
-		} catch (Exception e) {
-		}
-	}
-	
-	private void writeToFileJobMap() {
-		try {
-			ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(JOB_MAP_FILE_NAME));
-			objectOutputStream.writeObject(jobMap);
-			objectOutputStream.flush();
-			objectOutputStream.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public Map<String, Job> getJobMap() {
-		return jobMap;
-	}
-
-	public void register(Map<String, String> param) {
-		if(jobMap.get(param.get("name"))!=null) {
-			return;
-		}
+	public synchronized void register(Map<String, String> param) {
 		Job job = new Job();
 		job.setName(param.get("name"));
 		job.setProcessor(param.get("processor"));
 		job.setParameter(param.get("parameter"));
-		jobMap.put(param.get("name"), job);
+		JobDAO.persist(job);
 	}
 	
-	public void remove(String jobName) {
-		jobMap.remove(jobName);
-		writeToFileJobMap();
+	public void remove(String jobKey) {
+		Job job = new Job();
+		job.setJobKey(jobKey);
+		job = JobDAO.selectOne(job);
+		JobDAO.delete(job);
 	}
 
-	public void execute(String jobName) {
-		Job job = jobMap.get(jobName);
+	public void execute(String jobKey) {
+		Job job = new Job();
+		job.setJobKey(jobKey);
+		job = JobDAO.selectOne(job);
 		processorBO.process(job.getProcessor(), job.getParameter());
 	}
 
 	public void update(Map<String, String> param) {
-		Job job = jobMap.get(param.get("name"));
-		job.setName(param.get("newName"));
+		Job job = new Job();
+		job.setJobKey(param.get("jobKey"));
+		JobDAO.selectOne(job);
+		job.setName(param.get("name"));
 		job.setProcessor(param.get("processor"));
 		job.setParameter(param.get("parameter"));
-		jobMap.remove(param.get("name"));
-		jobMap.put(job.getName(), job);
+		JobDAO.update(job);
+	}
+
+	public Job getJobByKey(String jobKey) {
+		Job job = new Job();
+		job.setJobKey(jobKey);
+		return JobDAO.selectOne(job);
 	}
 }

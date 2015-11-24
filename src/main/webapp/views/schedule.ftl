@@ -12,14 +12,14 @@
 			<th>삭제</th>
 		</tr>
 		<#assign i=0>
-		<#list scheduleMap?keys as key>
+		<#list scheduleList as schedule>
 		<tr>
-			<td>${i+1}</td>
-			<td>${key?html}</td>
-			<td>${scheduleMap[key].job?html}</td>
-			<td>${scheduleMap[key].timeRegex?html}</td>
-			<td><button onclick="$schedule.showUpdatePopup('${key?html}', '${scheduleMap[key].job?html}', '${scheduleMap[key].timeRegex?html}')">수정</button></td>
-			<td><button onclick="$schedule.remove('${key?html}')">삭제</button></td>
+			<td>${schedule.scheduleKey?html}</td>
+			<td>${schedule.name?html}</td>
+			<td>${schedule.job.name?html}</td>
+			<td>${schedule.timeRegex?html}</td>
+			<td><button onclick="$schedule.showUpdatePopup('${schedule.scheduleKey?html}','${schedule.name?html}', '${schedule.job.jobKey?html}', '${schedule.timeRegex?html}')">수정</button></td>
+			<td><button onclick="$schedule.remove('${schedule.scheduleKey?html}')">삭제</button></td>
 		</tr>
 		<#assign i=i+1>
 		</#list>
@@ -42,9 +42,9 @@
 				<tr>
 					<th>JOB</th>
 					<td>
-						<select name="job">
-							<#list jobMap?keys as key>
-							<option value="${key?html}">${key?html}</option>
+						<select name="jobKey">
+							<#list jobList as job>
+							<option value="${job.jobKey?html}">${job.name?html}</option>
 							</#list>
 						</select>
 					</td>
@@ -61,7 +61,7 @@
 	</div>
 </form>
 <form id="schedule_update" action="/schedule/update" style="display: none;">
-	<input name="name" type="hidden">
+	<input name="scheduleKey" type="hidden">
 	<div class="dimmed">
 		<div class="popup">
 			<table>
@@ -70,14 +70,14 @@
 				</tr>
 				<tr>
 					<th>이름</th>
-					<td><input name="newName" type="text"></td>
+					<td><input name="name" type="text"></td>
 				</tr>
 				<tr>
 					<th>JOB</th>
 					<td>
-						<select name="job">
-							<#list jobMap?keys as key>
-							<option value="${key?html}">${key?html}</option>
+						<select name="jobKey">
+							<#list jobList as job>
+							<option value="${job.jobKey?html}">${job.name?html}</option>
 							</#list>
 						</select>
 					</td>
@@ -114,9 +114,9 @@
 			location.href = "/schedule/remove?name=" + name;
 		},
 		
-		showUpdatePopup : function(name, job, timeRegex) {
+		showUpdatePopup : function(scheduleKey, name, job, timeRegex) {
+			$('#schedule_update')[0].scheduleKey.value = scheduleKey;
 			$('#schedule_update')[0].name.value = name;
-			$('#schedule_update')[0].newName.value = name;
 			$('#schedule_update')[0].job.value = job;
 			$('#schedule_update')[0].timeRegex.value = timeRegex;
 			$('#schedule_update').show();
@@ -125,7 +125,7 @@
 			$('#schedule_update').hide();
 		},
 		update : function() {
-			if ($('#schedule_update')[0].newName.value==="") {
+			if ($('#schedule_update')[0].name.value==="") {
 				alert('이름을 입력하세요');
 				return;
 			}

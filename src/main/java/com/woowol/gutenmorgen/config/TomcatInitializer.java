@@ -22,6 +22,7 @@ public class TomcatInitializer implements WebApplicationInitializer {
 	private void addRootConfig(ServletContext servletContext) {
 		servletContext.addListener(new ContextLoaderListener(new AnnotationConfigWebApplicationContext(){{
 			register(Property.class);
+			register(HibernateOltp.class);
 			register(Mvc.class);
 		}}));
 	}

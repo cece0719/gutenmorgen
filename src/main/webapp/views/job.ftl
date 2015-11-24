@@ -12,17 +12,17 @@
 			<th>수정</th>
 			<th>삭제</th>
 		</tr>
-		<#assign i=0> <#list jobMap?keys as key>
+		<#list jobList as job>
 		<tr>
-			<td>${i+1}</td>
-			<td>${key?html}</td>
-			<td>${jobMap[key].processor?html}</td>
-			<td>${	jobMap[key].parameter?html}</td>
-			<td><button onclick="$job.execute('${key?html}')">실행</button></td>
-			<td><button onclick="$job.showUpdatePopup('${key?html}', '${jobMap[key].processor?html}', '${jobMap[key].parameter?html}')">수정</button></td>
-			<td><button onclick="$job.remove('${key?html}')">삭제</button></td>
+			<td>${job.jobKey?html}</td>
+			<td>${job.name?html}</td>
+			<td>${job.processor?html}</td>
+			<td>${job.parameter?html}</td>
+			<td><button onclick="$job.execute('${job.jobKey?html}')">실행</button></td>
+			<td><button onclick="$job.showUpdatePopup('${job.jobKey?html}', '${job.name?html}', '${job.processor?html}', '${job.parameter?html}')">수정</button></td>
+			<td><button onclick="$job.remove('${job.jobKey?html}')">삭제</button></td>
 		</tr>
-		<#assign i=i+1> </#list>
+		</#list>
 	</table>
 	<div class="button">
 		<button onclick="$job.showRegisterPopup();">신규등록</button>
@@ -41,10 +41,13 @@
 				</tr>
 				<tr>
 					<th>프로세서</th>
-					<td><select name="processor"> <#list
-							processorMap?keys as key>
-							<option value="${key?html}">${key?html}</option> </#list>
-					</select></td>
+					<td>
+						<select name="processor">
+							<#list processorMap?keys as key>
+							<option value="${key?html}">${key?html}</option>
+							</#list>
+						</select>
+					</td>
 				</tr>
 				<tr>
 					<th>파라미터</th>
@@ -58,7 +61,7 @@
 	</div>
 </form>
 <form id="job_update" action="/job/update" style="display: none;">
-	<input name="name" type="hidden">
+	<input name="jobKey" type="hidden">
 	<div class="dimmed">
 		<div class="popup">
 			<table>
@@ -67,7 +70,7 @@
 				</tr>
 				<tr>
 					<th>이름</th>
-					<td><input name="newName" type="text"></td>
+					<td><input name="name" type="text"></td>
 				</tr>
 				<tr>
 					<th>프로세서</th>
@@ -108,15 +111,15 @@
 		},
 		
 		remove : function(name) {
-			location.href = "/job/remove?name=" + name;
+			location.href = "/job/remove?jobKey=" + name;
 		},
 		execute : function(name) {
-			location.href = "/job/execute?name=" + name;
+			location.href = "/job/execute?jobKey=" + name;
 		},
 		
-		showUpdatePopup : function(name, processor, parameter) {
+		showUpdatePopup : function(jobKey, name, processor, parameter) {
+			$('#job_update')[0].jobKey.value = jobKey;
 			$('#job_update')[0].name.value = name;
-			$('#job_update')[0].newName.value = name;
 			$('#job_update')[0].processor.value = processor;
 			$('#job_update')[0].parameter.value = parameter;
 			$('#job_update').show();
@@ -125,7 +128,7 @@
 			$('#job_update').hide();
 		},
 		update : function() {
-			if ($('#job_update')[0].newName.value==="") {
+			if ($('#job_update')[0].name.value==="") {
 				alert('이름을 입력하세요');
 				return;
 			}

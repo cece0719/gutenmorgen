@@ -1,14 +1,24 @@
 package com.woowol.gutenmorgen.model;
 
-import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-public class Job implements Serializable {
-	private static final long serialVersionUID = 2L;
-	
+@Entity
+public class Job {
+	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	private String jobKey;
 	private String name;
 	private String processor;
 	private String parameter;
 	
+	public String getJobKey() {
+		return jobKey;
+	}
+	public void setJobKey(String jobKey) {
+		this.jobKey = jobKey;
+	}
 	public String getName() {
 		return name;
 	}

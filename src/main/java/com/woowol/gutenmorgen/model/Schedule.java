@@ -1,24 +1,38 @@
 package com.woowol.gutenmorgen.model;
 
-import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
-public class Schedule implements Serializable {
-	private static final long serialVersionUID = 2L;
-	
+@Entity
+public class Schedule {
+	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	private String scheduleKey;
 	private String name;
-	private String job;
+	@OneToOne
+	@JoinColumn(name = "jobKey")
+	private Job job;
 	private String timeRegex;
 	
+	public String getScheduleKey() {
+		return scheduleKey;
+	}
+	public void setScheduleKey(String scheduleKey) {
+		this.scheduleKey = scheduleKey;
+	}
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getJob() {
+	public Job getJob() {
 		return job;
 	}
-	public void setJob(String job) {
+	public void setJob(Job job) {
 		this.job = job;
 	}
 	public String getTimeRegex() {

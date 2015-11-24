@@ -18,8 +18,8 @@ public class HomeController {
 	@RequestMapping(value = "/")
 	public String home(Model model) {
 		model.addAttribute("processorMap", processorBO.getProcessorMap());
-		model.addAttribute("jobMap", jobBO.getJobMap());		
-		model.addAttribute("scheduleMap", scheduleBO.getSchduleMap());
+		model.addAttribute("jobList", jobBO.getJobList());		
+		model.addAttribute("scheduleList", scheduleBO.getSchduleList());
 		return "home";
 	}
 }

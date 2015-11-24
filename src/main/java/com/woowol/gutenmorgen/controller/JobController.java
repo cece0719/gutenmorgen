@@ -17,7 +17,7 @@ public class JobController {
 	
 	@RequestMapping(value = "/remove")
 	public String remove(@RequestParam Map<String, String> param, Model model) {
-		jobBO.remove(param.get("name"));
+		jobBO.remove(param.get("jobKey"));
 		return "redirect:/";
 	}
 	
@@ -29,7 +29,7 @@ public class JobController {
 	
 	@RequestMapping(value = "/execute")
 	public String execute(@RequestParam Map<String, String> param, Model model) {
-		jobBO.execute(param.get("name"));
+		jobBO.execute(param.get("jobKey"));
 		return "redirect:/";
 	}
 	
