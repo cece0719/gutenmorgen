@@ -1,37 +1,36 @@
 package com.woowol.gutenmorgen.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.woowol.gutenmorgen.model.Result;
+import com.woowol.gutenmorgen.model.Result.ResultCode;
+
 @Controller
+@RequestMapping(value = "/buildAndDeploy")
 public class BuildAndDeployController {
+	@Value("${buildAndDeploy.script.path}") private String scriptPath;
+	
 	private String status = "run";
 	
-	@SuppressWarnings("serial")
-	@RequestMapping(value = "/status")
+	@RequestMapping(value = "/status.json")
 	@ResponseBody
-	public Map<String, Object> healthCheck(Model model) {
-		return new HashMap<String, Object>(){{
-			put("status", status);
-		}};
+	public Result healthCheck(Model model) {
+		return new Result(ResultCode.SUCCESS, status);
 	}
 
-	@SuppressWarnings("serial")
-	@RequestMapping(value = "/buildAndDeploy")
+	@RequestMapping(value = "/go.json")
 	@ResponseBody
-	public synchronized Map<String, Object> buildAndDeploy(Model model) throws IOException {
+	public synchronized Result go() throws IOException {
 		if ("run".equals(status)) {
+			new ProcessBuilder("bash", scriptPath).start();
 			status = "build";
-			new ProcessBuilder("bash", "/home/webservice/workspace/gutenmorgen/goDaemon.sh").start();
 		}
-		return new HashMap<String, Object>(){{
-			put("result", "success");
-		}};
+		return new Result(ResultCode.SUCCESS);
 	}
 }
