@@ -114,10 +114,10 @@
 			location.href = "/schedule/remove?name=" + name;
 		},
 		
-		showUpdatePopup : function(scheduleKey, name, job, timeRegex) {
+		showUpdatePopup : function(scheduleKey, name, jobKey, timeRegex) {
 			$('#schedule_update')[0].scheduleKey.value = scheduleKey;
 			$('#schedule_update')[0].name.value = name;
-			$('#schedule_update')[0].job.value = job;
+			$('#schedule_update')[0].jobKey.value = jobKey;
 			$('#schedule_update')[0].timeRegex.value = timeRegex;
 			$('#schedule_update').show();
 		},
