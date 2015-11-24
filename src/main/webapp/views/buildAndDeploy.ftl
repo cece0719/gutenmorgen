@@ -35,7 +35,7 @@
 	$build={
 		execute : function() {
 			$.ajax({
-				url : '/buildAndDeploy',
+				url : '/buildAndDeploy/go',
 				error : function() {
 					alert('에러');
 				},
@@ -45,7 +45,7 @@
 						var deploy = false;
 						var statusCheck = function() {
 							$.ajax({
-								url : '/status',
+								url : '/buildAndDeploy/status',
 								timeout : 1000,
 								success : function(data) {
 									if (data.status==='run') {

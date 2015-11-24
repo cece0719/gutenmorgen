@@ -10,10 +10,13 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SendMailBO {
+	@Value("${sendmail.gmail.id}") private String gmailId;
+	@Value("${sendmail.gmail.password}") private String gmailPassword;
 	
 	public void sendMail(String email, String subject, String content) throws AddressException, MessagingException {
 		// Step1
@@ -35,7 +38,7 @@ public class SendMailBO {
 	 
 		// Enter your correct gmail UserID and Password
 		// if you have 2FA enabled then provide App Specific Password
-		transport.connect("smtp.gmail.com", "smtptestking@gmail.com", "wjdqhfk898!");
+		transport.connect("smtp.gmail.com", gmailId, gmailPassword);
 		transport.sendMessage(generateMailMessage, generateMailMessage.getAllRecipients());
 		transport.close();
 	}
