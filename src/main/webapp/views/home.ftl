@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Guten Morgen</title>
+<title>Guten-Morgen</title>
 <script type="text/javascript"
 	src="https://code.jquery.com/jquery-latest.min.js"></script>
 <style type="text/css">
