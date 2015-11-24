@@ -3,7 +3,6 @@ package com.woowol.gutenmorgen.bo;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -35,11 +34,8 @@ public class ScheduleBO {
 		return scheduleDAO.selectList();
 	}
 
-	public void register(Map<String, String> param) {
-		Schedule schedule = new Schedule();
-		schedule.setName(param.get("name"));
-		schedule.setJob(jobBO.getJobByKey(param.get("jobKey")));
-		schedule.setTimeRegex(param.get("timeRegex"));
+	public void register(Schedule schedule, String jobKey) {
+		schedule.setJob(jobBO.getJobByKey(jobKey));
 		scheduleDAO.persist(schedule);
 	}
 
@@ -49,14 +45,14 @@ public class ScheduleBO {
 		scheduleDAO.delete(schedule);
 	}
 
-	public void update(Map<String, String> param) {
-		Schedule schedule = new Schedule();
-		schedule.setScheduleKey(param.get("scheduleKey"));
-		schedule = scheduleDAO.selectOne(schedule);
-		schedule.setName(param.get("name"));
-		schedule.setJob(jobBO.getJobByKey(param.get("jobKey")));
-		schedule.setTimeRegex(param.get("timeRegex"));
-		scheduleDAO.update(schedule);
+	public void update(Schedule schdedule, String jobKey) {
+		Schedule originSchedule = new Schedule();
+		originSchedule.setScheduleKey(schdedule.getScheduleKey());
+		originSchedule = scheduleDAO.selectOne(originSchedule);
+		originSchedule.setName(schdedule.getName());
+		originSchedule.setJob(jobBO.getJobByKey(jobKey));
+		originSchedule.setTimeRegex(schdedule.getTimeRegex());
+		scheduleDAO.update(originSchedule);
 	}
 
 	private class ScheduleCheckRunnable implements Runnable {

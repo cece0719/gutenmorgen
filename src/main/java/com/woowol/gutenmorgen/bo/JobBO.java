@@ -1,7 +1,6 @@
 package com.woowol.gutenmorgen.bo;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,11 +17,7 @@ public class JobBO {
 		return JobDAO.selectList();
 	}
 
-	public synchronized void register(Map<String, String> param) {
-		Job job = new Job();
-		job.setName(param.get("name"));
-		job.setProcessor(param.get("processor"));
-		job.setParameter(param.get("parameter"));
+	public void register(Job job) {
 		JobDAO.persist(job);
 	}
 	
@@ -40,14 +35,14 @@ public class JobBO {
 		processorBO.process(job.getProcessor(), job.getParameter());
 	}
 
-	public void update(Map<String, String> param) {
-		Job job = new Job();
-		job.setJobKey(param.get("jobKey"));
-		JobDAO.selectOne(job);
-		job.setName(param.get("name"));
-		job.setProcessor(param.get("processor"));
-		job.setParameter(param.get("parameter"));
-		JobDAO.update(job);
+	public void update(Job job) {
+		Job originJob = new Job();
+		originJob.setJobKey(job.getJobKey());
+		originJob = JobDAO.selectOne(originJob);
+		originJob.setName(job.getName());
+		originJob.setProcessor(job.getProcessor());
+		originJob.setParameter(job.getParameter());
+		JobDAO.update(originJob);
 	}
 
 	public Job getJobByKey(String jobKey) {
