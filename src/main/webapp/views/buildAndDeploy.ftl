@@ -34,40 +34,33 @@
 <script type="text/javascript">
 	$build={
 		execute : function() {
-			$.ajax({
-				url : '/buildAndDeploy/go',
-				error : function() {
-					alert('에러');
-				},
+			$ajax.post({
+				url : '/buildAndDeploy/go.json',
 				success : function(data) {
-					if (data.result==='success') {
-						$('#bad_loading').show();
-						var deploy = false;
-						var statusCheck = function() {
-							$.ajax({
-								url : '/buildAndDeploy/status',
-								timeout : 1000,
-								success : function(data) {
-									if (data.status==='run') {
-										$('#bad_text').html('완료');
-										location.reload();
-									}
-								},
-								error : function() {
-									if (!deploy) {
-										deploy = true;
-										$('#bad_text').html('배포중');
-									}
-								},
-								complete : function(data) {
-									setTimeout(statusCheck, 1000);
+					$('#bad_loading').show();
+					var deploy = false;
+					var statusCheck = function() {
+						$ajax.post({
+							url : '/buildAndDeploy/status.json',
+							timeout : 1000,
+							success : function(data) {
+								if (data.retMsg==='run') {
+									$('#bad_text').html('완료');
+									location.reload();
 								}
-							});
-						}
-						statusCheck();
-					} else {
-						alert('에러2');
+							},
+							error : function() {
+								if (!deploy) {
+									deploy = true;
+									$('#bad_text').html('배포중');
+								}
+							},
+							complete : function(data) {
+								setTimeout(statusCheck, 1000);
+							}
+						});
 					}
+						statusCheck();
 				}
 			});
 		} 

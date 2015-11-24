@@ -1,8 +1,8 @@
 <html>
 <head>
 <title>Guten Morgen</title>
-<script type="text/javascript"
-	src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript" src="/resources/js/ajax.js"></script>
 <style type="text/css">
 body {
 	margin: 0;

@@ -1,14 +1,15 @@
 package com.woowol.gutenmorgen.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.woowol.gutenmorgen.model.Result;
+import com.woowol.gutenmorgen.model.Result.ResultCode;
 
 @Controller
 @RequestMapping(value = "/buildAndDeploy")
@@ -17,23 +18,19 @@ public class BuildAndDeployController {
 	
 	private String status = "run";
 	
-	@RequestMapping(value = "/status")
+	@RequestMapping(value = "/status.json")
 	@ResponseBody
-	public Map<String, Object> healthCheck(Model model) {
-		Map<String, Object> map = new HashMap<>();
-		map.put("status", status);
-		return map;
+	public Result healthCheck(Model model) {
+		return new Result(ResultCode.SUCCESS, status);
 	}
 
-	@RequestMapping(value = "/go")
+	@RequestMapping(value = "/go.json")
 	@ResponseBody
-	public synchronized Map<String, Object> go(Model model) throws IOException {
+	public synchronized Result go() throws IOException {
 		if ("run".equals(status)) {
-			status = "build";
 			new ProcessBuilder("bash", scriptPath).start();
+			status = "build";
 		}
-		Map<String, Object> map = new HashMap<>();
-		map.put("result", "success");
-		return map;
+		return new Result(ResultCode.SUCCESS);
 	}
 }
