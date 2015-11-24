@@ -1,24 +1,19 @@
 $ajax = {
-	post : function(object) {
-		var originSuccess = object.success;
-		var originError = object.error;
-		object.success = function(data) {
+	post : function(param) {
+		var originSuccess = param.success;
+		var originError = param.error;
+		param.success = function(data) {
 			if (data.retCode === '0' && typeof originSuccess === 'function') {
 				originSuccess(data);
-			} else {
-				$ajax.error('[' + data.retCode + ']' + data.retMsg, originError);
+			} else if (data.retCode !== '0' && typeof originError === 'function') {
+				originError('[' + data.retCode + ']' + data.retMsg);
 			}
 		};
-		object.error = function(request, status, error) {
-			$ajax.error("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error, originError);
+		param.error = function(request, status, error) {
+			if (typeof originError === 'function') {
+				originError("알수없는 오류 code:["+request.status+"]"+"message:["+request.responseText+"]error:["+error+"]");
+			}
 		};
-		return $.ajax(object);
-	},
-	
-	error : function(msg, error) {
-		alert(msg);
-		if (typeof error === 'function') {
-			error();
-		}
+		return $.ajax(param);
 	}
 }

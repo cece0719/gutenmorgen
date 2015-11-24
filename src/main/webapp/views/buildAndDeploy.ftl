@@ -61,6 +61,9 @@
 						});
 					}
 						statusCheck();
+				},
+				error : function(errMsg) {
+					alert(errMsg);
 				}
 			});
 		} 
