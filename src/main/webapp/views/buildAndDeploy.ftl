@@ -60,7 +60,7 @@
 							}
 						});
 					}
-						statusCheck();
+					statusCheck();
 				},
 				error : function(errMsg) {
 					alert(errMsg);
