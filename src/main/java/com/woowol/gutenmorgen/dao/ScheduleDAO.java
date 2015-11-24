@@ -22,7 +22,7 @@ public class ScheduleDAO extends OltpBaseDAO<Schedule>{
 			}
 		};
 		map.put("scheduleKey", schedule.getScheduleKey());
-		map.put("jobName", schedule.getName());
+		map.put("name", schedule.getName());
 		map.put("timeRegex", schedule.getTimeRegex());
 		return map;
 	}

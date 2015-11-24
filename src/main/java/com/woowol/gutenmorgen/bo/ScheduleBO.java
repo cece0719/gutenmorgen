@@ -51,7 +51,7 @@ public class ScheduleBO {
 
 	public void update(Map<String, String> param) {
 		Schedule schedule = new Schedule();
-		schedule.setScheduleKey(param.get("sheduleKey"));
+		schedule.setScheduleKey(param.get("scheduleKey"));
 		schedule = scheduleDAO.selectOne(schedule);
 		schedule.setName(param.get("name"));
 		schedule.setJob(jobBO.getJobByKey(param.get("jobKey")));
