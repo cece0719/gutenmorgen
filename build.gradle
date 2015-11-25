@@ -80,7 +80,7 @@ task customBuild(type: Copy) {
 }
 
 task tomcatShutdown() {
-	("${tomcatDir}/shutdown.sh").execute()
+	("${tomcatDir}/bin/shutdown.sh").execute()
 	for (cnt in 1..5 ) {
 		pid = "ps -ef | grep ${tomcatDirName} | grep -v grep | awk '{print \$2}'".execute().text
 		if (pid == "") {
@@ -96,7 +96,7 @@ task tomcatShutdown() {
 }
 
 task tomcatStart() {
-	("${tomcatDir}/startup.sh").execute()
+	("${tomcatDir}/bin/startup.sh").execute()
 }
 
 task buildAndDeploy() {
