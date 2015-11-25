@@ -78,7 +78,7 @@ public class ScheduleBO {
 			}
 		}
 
-		private void checkScheduleAsync(String currentTime) {
+		private void checkScheduleAsync(final String currentTime) {
 			new Thread(new Runnable() {
 				public void run() {
 					for (Schedule schedule : scheduleDAO.selectList()) {
