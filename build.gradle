@@ -17,7 +17,7 @@ slf4j: '1.7.2'
 
 def deploydir='../../deploy/gutenmorgen/'
 def tomcatDirName='/tomcat/'
-def tomcatDir='/home/webservice/apps/tomcat/'
+def tomcatDir='/home/webservice/apps/tomcat'
 
 repositories {
     mavenLocal()
@@ -81,9 +81,9 @@ task customBuild(type: Copy) {
 }
 
 task tomcatShutdown() {
-	("${tomcatDir}" + "shutdown.sh").execute()
+	("${tomcatDir}/shutdown.sh").execute()
 	for (cnt in 1..5 ) {
-		pid = "ps -ef | grep "+"${tomcatDirName}" +" | grep -v grep | awk '{print $2}'".execute().text
+		pid = "ps -ef | grep ${tomcatDirName} | grep -v grep | awk '{print \$2}'".execute().text
 		if (pid == "") {
 			break
 		}
@@ -97,7 +97,7 @@ task tomcatShutdown() {
 }
 
 task tomcatStart() {
-	("${tomcatDir}" + "startup.sh").execute()
+	("${tomcatDir}/startup.sh").execute()
 }
 
 // source code encoding
