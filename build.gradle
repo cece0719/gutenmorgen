@@ -1,0 +1,76 @@
+// Apply the java plugin to add support for Java
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'eclipse-wtp'
+apply plugin: 'maven'
+
+project.group = 'com.woowol'
+project.archivesBaseName = 'gutenmorgen'
+project.version = '1.0.0-BUILD-SNAPSHOT'
+
+// dependency versions
+def version = [
+spring: '4.2.3.RELEASE',
+aspectj: '1.8.7',
+slf4j: '1.7.2'
+]
+
+def deploydir='../../deploy/gutenmorgen/'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+//Gretty Embedded Jetty
+buildscript {
+  repositories {
+    jcenter()
+  }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: '*.jar') //lib 파일에서 로컬 jar import
+
+    compile "org.springframework:spring-context:${version.spring}"
+    compile "org.springframework:spring-webmvc:${version.spring}"
+    compile "org.springframework:spring-context-support:${version.spring}"
+
+    compile "org.aspectj:aspectjrt:${version.aspectj}"
+
+    runtime "org.slf4j:jcl-over-slf4j:${version.slf4j}" //runtime
+    compile "org.slf4j:slf4j-api:${version.slf4j}"
+    compile "ch.qos.logback:logback-classic:1.1.3"
+
+    compile "javax.inject:javax.inject:1"
+
+    providedCompile "javax.servlet:javax.servlet-api:3.1.0" //provide
+
+    compile "org.freemarker:freemarker:2.3.23"
+    compile "com.fasterxml.jackson.core:jackson-databind:2.6.3"
+    compile "org.apache.httpcomponents:httpclient:4.5.1"
+    compile "javax.mail:mail:1.4.7"
+    compile "org.jsoup:jsoup:1.7.2"
+    compile "org.springframework:spring-tx:${version.spring}"
+
+    compile "org.springframework:spring-orm:${version.spring}"
+    compile "org.hibernate:hibernate-core:4.3.6.Final"
+    compile "org.apache.commons:commons-lang3:3.4"
+    compile "commons-dbcp:commons-dbcp:1.4"
+    compile "mysql:mysql-connector-java:5.1.37"
+    compile "org.springframework:spring-jdbc:${version.spring}"
+    
+    compile "org.projectlombok:lombok:1.16.4"
+}
+
+task explodedWar(type: Copy) {
+    description = 'Generate exploded war'
+    group = 'build'
+    dependsOn war.dependsOn
+ 
+    into "${deploydir}"
+    with war
+}
+
+// source code encoding
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'

@@ -49,7 +49,7 @@ public class HibernateOltp {
 	@SuppressWarnings("serial")
 	@Bean(name=db+"TxManager")
 	@Autowired
-	public HibernateTransactionManager txManager(SessionFactory sessionFactory) {
+	public HibernateTransactionManager txManager(final SessionFactory sessionFactory) {
 		return new HibernateTransactionManager(){{
 			setSessionFactory(sessionFactory);
 		}};
