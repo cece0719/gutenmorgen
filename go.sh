@@ -19,6 +19,6 @@ echo "Stop Sucessfully"
 
 git --work-tree=$WORKSPACE --git-dir=$WORKSPACE/.git pull
 
-mvn clean compile war:exploded
+gradle explodedWar
 
 $TOMCATDIR/bin/startup.sh
