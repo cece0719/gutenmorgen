@@ -1,6 +1,8 @@
 package com.woowol.gutenmorgen.controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -29,8 +31,19 @@ public class BuildAndDeployController {
 	@ResponseBody
 	public synchronized Result go() throws IOException, InterruptedException {
 		if ("run".equals(status)) {
-			new ProcessBuilder("bash", gitPullScript).start().waitFor();
+			Process d = new ProcessBuilder("bash", gitPullScript).start();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(d.getInputStream()));
+		String line = null;
+		while ( (line = reader.readLine()) != null) {
+			System.out.println(line);
+		}
+
 			new ProcessBuilder("bash", gradleScript).start();
+			Process da = new ProcessBuilder("bash", gitPullScript).start();
+			BufferedReader reader2 = new BufferedReader(new InputStreamReader(da.getInputStream()));
+		while ( (line = reader2.readLine()) != null) {
+			System.out.println(line);
+		}			
 			status = "build";
 		}
 		return new Result(ResultCode.SUCCESS);
