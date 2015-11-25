@@ -66,7 +66,7 @@ dependencies {
     compile "org.projectlombok:lombok:1.16.6"
 }
 
-task customBuild(type: Copy) {
+task customBuild(type: Copy) << {
     description = 'Generate exploded war'
     group = 'build'
     dependsOn war.dependsOn
@@ -75,8 +75,7 @@ task customBuild(type: Copy) {
     with war
 }
 
-task tomcatShutdown() {
-	if (Os.isFamily(Os.FAMILY_WINDOWS)) return
+task explodedWar << {
 	("${tomcatDir}/bin/shutdown.sh").execute()
 	for (cnt in 1..5 ) {
 		def pid = "ps -ef | grep ${tomcatDirName} | grep -v grep | awk '{print \$2}'".execute().text
@@ -92,18 +91,8 @@ task tomcatShutdown() {
 	println "Stop Sucessfully"
 }
 
-task tomcatStart() {
-	if (Os.isFamily(Os.FAMILY_WINDOWS)) return
+task tomcatStartup << {
 	("${tomcatDir}/bin/startup.sh").execute()
-}
-
-import org.apache.tools.ant.taskdefs.condition.Os
-task buildAndDeploy() {
-	if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
-		tasks.tomcatShutdown.execute()
-		tasks.customBuild.execute()
-		tasks.tomcatStart.execute()
-	}
 }
 
 // source code encoding
