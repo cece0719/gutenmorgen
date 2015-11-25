@@ -82,7 +82,7 @@ task customBuild(type: Copy) {
 task tomcatShutdown() {
 	("${tomcatDir}/bin/shutdown.sh").execute()
 	for (cnt in 1..5 ) {
-		pid = "ps -ef | grep ${tomcatDirName} | grep -v grep | awk '{print \$2}'".execute().text
+		def pid = "ps -ef | grep ${tomcatDirName} | grep -v grep | awk '{print \$2}'".execute().text
 		if (pid == "") {
 			break
 		}
