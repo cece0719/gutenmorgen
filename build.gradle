@@ -63,10 +63,10 @@ dependencies {
     compile "mysql:mysql-connector-java:5.1.37"
     compile "org.springframework:spring-jdbc:${version.spring}"
     
-    compile "org.projectlombok:lombok:1.16.4"
+    compile "org.projectlombok:lombok:1.16.6"
 }
 
-task gitPull() {
+def gitPull() {
 	"git --work-tree=${workspace} --git-dir=${workspace}/.git pull".execute()
 }
 
@@ -79,7 +79,7 @@ task customBuild(type: Copy) {
     with war
 }
 
-task tomcatShutdown() {
+def tomcatShutdown() {
 	("${tomcatDir}/bin/shutdown.sh").execute()
 	for (cnt in 1..5 ) {
 		def pid = "ps -ef | grep ${tomcatDirName} | grep -v grep | awk '{print \$2}'".execute().text
@@ -95,15 +95,18 @@ task tomcatShutdown() {
 	println "Stop Sucessfully"
 }
 
-task tomcatStart() {
+def tomcatStart() {
 	("${tomcatDir}/bin/startup.sh").execute()
 }
 
+import org.apache.tools.ant.taskdefs.condition.Os
 task buildAndDeploy() {
-	tasks.gitPull.execute()
-	tasks.tomcatShutdown.execute()
-	tasks.customBuild.execute()
-	tasks.tomcatStart.execute()
+	if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
+		gitPull()
+		tomcatShutdown()
+		tasks.customBuild.execute()
+		tomcatStart()
+	}
 }
 
 // source code encoding
