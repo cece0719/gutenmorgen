@@ -17,6 +17,7 @@ while [ "x$PID" != "x" ] ; do
 done
 echo "Stop Sucessfully"
 
+cd $WORKSPACE
 git --work-tree=$WORKSPACE --git-dir=$WORKSPACE/.git pull
 
 gradle explodedWar
