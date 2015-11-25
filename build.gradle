@@ -66,9 +66,9 @@ dependencies {
 }
 
 task buildAndDeploy() {
-	dependson.tomcatShutdown
-	dependson.customBuild
-	dependson.tomcatStart
+	tasks.tomcatShutdown.execute()
+	tasks.customBuild.execute()
+	tasks.tomcatStart.execute()
 }
 
 task customBuild(type: Copy) {
@@ -83,7 +83,7 @@ task customBuild(type: Copy) {
 task tomcatShutdown() {
 	("${tomcatDir}" + "shutdown.sh").execute()
 	for (cnt in 1..5 ) {
-		pid = "ps -ef | grep ${tomcatDirName} | grep -v grep | awk '{print $2}'".execute().text
+		pid = "ps -ef | grep "+"${tomcatDirName}" +" | grep -v grep | awk '{print $2}'".execute().text
 		if (pid == "") {
 			break
 		}
