@@ -16,6 +16,8 @@ slf4j: '1.7.2'
 ]
 
 def deploydir='../../deploy/gutenmorgen/'
+def tomcatDirName='/tomcat/'
+def tomcatDir='/home/webservice/apps/tomcat/'
 
 repositories {
     mavenLocal()
@@ -63,13 +65,39 @@ dependencies {
     compile "org.projectlombok:lombok:1.16.4"
 }
 
-task explodedWar(type: Copy) {
+task buildAndDeploy() {
+	dependson.tomcatShutdown
+	dependson.customBuild
+	dependson.tomcatStart
+}
+
+task customBuild(type: Copy) {
     description = 'Generate exploded war'
     group = 'build'
     dependsOn war.dependsOn
  
     into "${deploydir}"
     with war
+}
+
+task tomcatShutdown() {
+	("${tomcatDir}" + "shutdown.sh").execute()
+	for (cnt in 1..5 ) {
+		pid = "ps -ef | grep ${tomcatDirName} | grep -v grep | awk '{print $2}'".execute().text
+		if (pid == "") {
+			break
+		}
+		println "Process Still exist"
+		if (cnt == 5) {
+			echo "Send Kill Signal Tomcat process"
+			("kill -9 " + pid).execute()
+		}
+	}
+	echo "Stop Sucessfully"
+}
+
+task tomcatStart() {
+	("${tomcatDir}" + "startup.sh").execute()
 }
 
 // source code encoding
