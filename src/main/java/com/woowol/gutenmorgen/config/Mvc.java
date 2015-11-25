@@ -11,6 +11,9 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
 @ComponentScan(basePackages = "com.woowol.gutenmorgen", excludeFilters = @ComponentScan.Filter(Configuration.class) )
@@ -43,6 +46,16 @@ public class Mvc extends WebMvcConfigurerAdapter {
 			.addResourceLocations("/resources/")
 			.setCachePeriod(31556926);
 	}
+	
+	@Bean
+	public MappingJackson2JsonView jsonView() {
+		return new MappingJackson2JsonView();
+	}
+	
+//	@Bean
+//	ObjectMapper objectMapper() {
+//		return new ObjectMapper();
+//	}
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {

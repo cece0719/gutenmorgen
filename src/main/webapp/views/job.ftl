@@ -110,11 +110,11 @@
 			$('#job_register').submit();
 		},
 		
-		remove : function(name) {
-			location.href = "/job/remove?jobKey=" + name;
+		remove : function(jobKey) {
+			location.href = "/job/remove/" + jobKey;
 		},
-		execute : function(name) {
-			location.href = "/job/execute?jobKey=" + name;
+		execute : function(jobKey) {
+			location.href = "/job/execute/" + jobKey;
 		},
 		
 		showUpdatePopup : function(jobKey, name, processor, parameter) {

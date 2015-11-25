@@ -110,8 +110,8 @@
 			$('#schedule_register').submit();
 		},
 		
-		remove : function(name) {
-			location.href = "/schedule/remove?name=" + name;
+		remove : function(scheduleKey) {
+			location.href = "/schedule/remove/" + scheduleKey;
 		},
 		
 		showUpdatePopup : function(scheduleKey, name, jobKey, timeRegex) {

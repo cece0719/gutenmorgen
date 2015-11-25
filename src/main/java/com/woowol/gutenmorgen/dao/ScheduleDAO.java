@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.woowol.gutenmorgen.model.Job;
 import com.woowol.gutenmorgen.model.Schedule;
 
 @Repository
