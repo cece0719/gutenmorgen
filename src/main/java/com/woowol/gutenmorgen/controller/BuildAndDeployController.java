@@ -14,7 +14,7 @@ import com.woowol.gutenmorgen.model.Result.ResultCode;
 @Controller
 @RequestMapping(value = "/buildAndDeploy")
 public class BuildAndDeployController {
-	@Value("${buildAndDeploy.script.path}") private String scriptPath;
+	@Value("${buildAndDeploy.script}") private String script;
 	
 	private String status = "run";
 	
@@ -28,7 +28,7 @@ public class BuildAndDeployController {
 	@ResponseBody
 	public synchronized Result go() throws IOException {
 		if ("run".equals(status)) {
-			new ProcessBuilder("bash", scriptPath).start();
+			new ProcessBuilder("bash", script).start();
 			status = "build";
 		}
 		return new Result(ResultCode.SUCCESS);

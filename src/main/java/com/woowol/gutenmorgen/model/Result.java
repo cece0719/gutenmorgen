@@ -3,8 +3,10 @@ package com.woowol.gutenmorgen.model;
 import lombok.Getter;
 
 public class Result {
-	private @Getter String retCode;
-	private @Getter Object retMsg;
+	@Getter
+	private String retCode;
+	@Getter
+	private Object retMsg;
 	
 	public Result(ResultCode resultCode) {
 		this.retCode = resultCode.getCode();

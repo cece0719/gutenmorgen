@@ -7,14 +7,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.woowol.gutenmorgen.config.HibernateOltp;
 
+import lombok.Getter;
+
 @Transactional
 public abstract class OltpBaseDAO<T> extends BaseDAO<T>{
 	@Autowired
+	@Getter
 	@Qualifier(HibernateOltp.db +"SessionFactory")
 	private SessionFactory sessionFactory;
-
-	@Override
-	public SessionFactory getSessionFactory() {
-		return sessionFactory;
-	}
 }
