@@ -100,7 +100,7 @@ task tomcatStart() {
 }
 
 task buildAndDeploy() {
-	tasks.gitPull()
+	tasks.gitPull.execute()
 	tasks.tomcatShutdown.execute()
 	tasks.customBuild.execute()
 	tasks.tomcatStart.execute()
