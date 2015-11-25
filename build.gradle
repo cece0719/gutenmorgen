@@ -18,6 +18,7 @@ slf4j: '1.7.2'
 def deploydir='../../deploy/gutenmorgen/'
 def tomcatDirName='/tomcat/'
 def tomcatDir='/home/webservice/apps/tomcat'
+def workspace='/home/webservice/workspace/gutenmorgen'
 
 repositories {
     mavenLocal()
@@ -65,10 +66,8 @@ dependencies {
     compile "org.projectlombok:lombok:1.16.4"
 }
 
-task buildAndDeploy() {
-	tasks.tomcatShutdown.execute()
-	tasks.customBuild.execute()
-	tasks.tomcatStart.execute()
+task tasks.gitPull() {
+	"git --work-tree=${workspace} --git-dir=${workspace}/.git pull".execute()
 }
 
 task customBuild(type: Copy) {
@@ -98,6 +97,13 @@ task tomcatShutdown() {
 
 task tomcatStart() {
 	("${tomcatDir}/startup.sh").execute()
+}
+
+task buildAndDeploy() {
+	tasks.gitPull()
+	tasks.tomcatShutdown.execute()
+	tasks.customBuild.execute()
+	tasks.tomcatStart.execute()
 }
 
 // source code encoding
