@@ -66,11 +66,6 @@ dependencies {
     compile "org.projectlombok:lombok:1.16.6"
 }
 
-task gitPull() {	
-	if (Os.isFamily(Os.FAMILY_WINDOWS)) return
-	"git --work-tree=${workspace} --git-dir=${workspace}/.git pull".execute()
-}
-
 task customBuild(type: Copy) {
     description = 'Generate exploded war'
     group = 'build'
@@ -105,7 +100,6 @@ task tomcatStart() {
 import org.apache.tools.ant.taskdefs.condition.Os
 task buildAndDeploy() {
 	if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
-		tasks.gitPull.execute()
 		tasks.tomcatShutdown.execute()
 		tasks.customBuild.execute()
 		tasks.tomcatStart.execute()
@@ -114,5 +108,3 @@ task buildAndDeploy() {
 
 // source code encoding
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-
-//test
