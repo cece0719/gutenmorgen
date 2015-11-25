@@ -66,7 +66,8 @@ dependencies {
     compile "org.projectlombok:lombok:1.16.6"
 }
 
-def gitPull() {
+task gitPull() {	
+	if (Os.isFamily(Os.FAMILY_WINDOWS)) return
 	"git --work-tree=${workspace} --git-dir=${workspace}/.git pull".execute()
 }
 
@@ -79,7 +80,8 @@ task customBuild(type: Copy) {
     with war
 }
 
-def tomcatShutdown() {
+task tomcatShutdown() {
+	if (Os.isFamily(Os.FAMILY_WINDOWS)) return
 	("${tomcatDir}/bin/shutdown.sh").execute()
 	for (cnt in 1..5 ) {
 		def pid = "ps -ef | grep ${tomcatDirName} | grep -v grep | awk '{print \$2}'".execute().text
@@ -95,17 +97,18 @@ def tomcatShutdown() {
 	println "Stop Sucessfully"
 }
 
-def tomcatStart() {
+task tomcatStart() {
+	if (Os.isFamily(Os.FAMILY_WINDOWS)) return
 	("${tomcatDir}/bin/startup.sh").execute()
 }
 
 import org.apache.tools.ant.taskdefs.condition.Os
 task buildAndDeploy() {
 	if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
-		gitPull()
-		tomcatShutdown()
+		tasks.gitPull.execute()
+		tasks.tomcatShutdown.execute()
 		tasks.customBuild.execute()
-		tomcatStart()
+		tasks.tomcatStart.execute()
 	}
 }
 
