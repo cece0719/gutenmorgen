@@ -88,11 +88,11 @@ task tomcatShutdown() {
 		}
 		println "Process Still exist"
 		if (cnt == 5) {
-			echo "Send Kill Signal Tomcat process"
+			println "Send Kill Signal Tomcat process"
 			("kill -9 " + pid).execute()
 		}
 	}
-	echo "Stop Sucessfully"
+	println "Stop Sucessfully"
 }
 
 task tomcatStart() {
