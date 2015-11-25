@@ -1,8 +1,10 @@
 package com.woowol.gutenmorgen.model;
 
+import lombok.Getter;
+
 public class Result {
-	private String retCode;
-	private Object retMsg;
+	private @Getter String retCode;
+	private @Getter Object retMsg;
 	
 	public Result(ResultCode resultCode) {
 		this.retCode = resultCode.getCode();
@@ -15,14 +17,6 @@ public class Result {
 		if (!resultCode.equals(ResultCode.SUCCESS)) {
 			this.retMsg = resultCode.getRetMsg() + " : " + this.retMsg;
 		}
-	}
-	
-	public String getRetCode() {
-		return retCode;
-	}
-	
-	public Object getRetMsg() {
-		return retMsg;
 	}
 
 
