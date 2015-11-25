@@ -14,7 +14,8 @@ import com.woowol.gutenmorgen.model.Result.ResultCode;
 @Controller
 @RequestMapping(value = "/buildAndDeploy")
 public class BuildAndDeployController {
-	@Value("${buildAndDeploy.script}") private String script;
+	@Value("${buildAndDeploy.script.gradle}") private String gradleScript;
+	@Value("${buildAndDeploy.script.gitPull}") private String gitPullScript;
 	
 	private String status = "run";
 	
@@ -26,9 +27,10 @@ public class BuildAndDeployController {
 
 	@RequestMapping(value = "/go.json")
 	@ResponseBody
-	public synchronized Result go() throws IOException {
+	public synchronized Result go() throws IOException, InterruptedException {
 		if ("run".equals(status)) {
-			new ProcessBuilder("bash", script).start();
+			new ProcessBuilder("bash", gitPullScript).start().waitFor();
+			new ProcessBuilder("bash", gradleScript).start();
 			status = "build";
 		}
 		return new Result(ResultCode.SUCCESS);
