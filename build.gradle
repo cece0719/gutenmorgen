@@ -3,6 +3,7 @@ apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'eclipse-wtp'
 apply plugin: 'maven'
+apply plugin:'base'
 
 project.group = 'com.woowol'
 project.archivesBaseName = 'gutenmorgen'
