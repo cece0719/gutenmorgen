@@ -70,9 +70,9 @@ allprojects {
     }
 }
 
-//createTask('explodedWar', dependsOn: war) {
-//    ant.unzip(src: war.archivePath, dest: '../deploy')
-//}
+war.doLast {
+    ant.unzip(src: war.archivePath, dest: "$buildDir/exploded")
+}
 
 // source code encoding
 [compileJava, compileTestJava]*.options*.encoding = "UTF-8"
