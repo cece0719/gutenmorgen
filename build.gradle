@@ -70,5 +70,10 @@ allprojects {
     }
 }
 
+task explodedWar(type: Copy) << {
+    into "../../deploy"
+    with war
+}
+
 // source code encoding
 [compileJava, compileTestJava]*.options*.encoding = "UTF-8"
