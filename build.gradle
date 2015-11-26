@@ -21,13 +21,6 @@ repositories {
     mavenCentral()
 }
 
-//Gretty Embedded Jetty
-buildscript {
-  repositories {
-    jcenter()
-  }
-}
-
 dependencies {
     compile fileTree(dir: 'libs', include: '*.jar') //lib 파일에서 로컬 jar import
 
@@ -60,6 +53,21 @@ dependencies {
     compile "org.springframework:spring-jdbc:${version.spring}"
     
     compile "org.projectlombok:lombok:1.16.6"
+}
+
+final String DEFAULT_PROFILE = 'local'
+allprojects {
+    if (!project.hasProperty('profile') || !profile) {
+        ext.profile = DEFAULT_PROFILE
+    }
+    // 리소스에 각 프로필별 리소스 디렉토리 추가
+    sourceSets {
+        main {
+            resources {
+                srcDir "src/main/resources-${profile}"
+            }
+        }
+    }
 }
 
 // source code encoding
