@@ -16,6 +16,9 @@ aspectj: '1.8.7',
 slf4j: '1.7.2'
 ]
 
+def tomcatDirName='/tomcat/'
+def tomcatDir='/home/webservice/apps/tomcat'
+
 repositories {
     mavenLocal()
     mavenCentral()
@@ -71,7 +74,28 @@ allprojects {
 }
 
 war.doLast {
-    ant.unzip(src: war.archivePath, dest: "$buildDir/../../../deploy")
+    ant.unzip(src: war.archivePath, dest: "$buildDir/exploded")
+}
+
+ask tomcatShutdown << {
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) return
+    ("${tomcatDir}/bin/shutdown.sh").execute()
+    for (cnt in 1..5 ) {
+        def pid = "ps -ef | grep ${tomcatDirName} | grep -v grep | awk '{print \$2}'".execute().text
+        if (pid == "") {
+            break
+        }
+        println "Process Still exist"
+        if (cnt == 5) {
+            println "Send Kill Signal Tomcat process"
+            ("kill -9 " + pid).execute()
+        }
+    }
+    println "Stop Sucessfully"
+}
+
+task tomcatStart << {
+    ("${tomcatDir}/startup.sh").execute()
 }
 
 // source code encoding
