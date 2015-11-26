@@ -1,6 +1,7 @@
 package com.woowol.gutenmorgen.bo;
 
-import java.util.Properties;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -9,16 +10,14 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import java.util.Properties;
 
 @Service
 public class SendMailBO {
 	@Value("${sendmail.gmail.id}") private String gmailId;
 	@Value("${sendmail.gmail.password}") private String gmailPassword;
 	
-	public void sendMail(String email, String subject, String content) throws AddressException, MessagingException {
+	public void sendMail(String email, String subject, String content) throws MessagingException {
 		// Step1
 		Properties mailServerProperties = System.getProperties();
 		mailServerProperties.put("mail.smtp.port", "587");
