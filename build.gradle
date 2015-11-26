@@ -4,6 +4,7 @@ apply plugin: 'war'
 apply plugin: 'eclipse-wtp'
 apply plugin: 'maven'
 apply plugin:'base'
+apply plugin: 'com.bmuschko.tomcat'
 
 project.group = 'com.woowol'
 project.archivesBaseName = 'gutenmorgen'
@@ -13,13 +14,9 @@ project.version = '1.0.0-BUILD-SNAPSHOT'
 def version = [
 spring: '4.2.3.RELEASE',
 aspectj: '1.8.7',
-slf4j: '1.7.2'
+slf4j: '1.7.2',
+tomcat : '8.0.28'
 ]
-
-def deploydir='../../deploy/gutenmorgen/'
-def tomcatDirName='/tomcat/'
-def tomcatDir='/home/webservice/apps/tomcat'
-def workspace='/home/webservice/workspace/gutenmorgen'
 
 repositories {
     mavenLocal()
@@ -31,6 +28,9 @@ buildscript {
   repositories {
     jcenter()
   }
+    dependencies {
+        classpath 'com.bmuschko:gradle-tomcat-plugin:2.2.3'
+    }
 }
 
 dependencies {
@@ -65,35 +65,16 @@ dependencies {
     compile "org.springframework:spring-jdbc:${version.spring}"
     
     compile "org.projectlombok:lombok:1.16.6"
+
+    tomcat	"org.apache.tomcat.embed:tomcat-embed-core:${version.tomcat}",
+            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${version.tomcat}",
+            "org.apache.tomcat.embed:tomcat-embed-jasper:${version.tomcat}"
 }
 
-task explodedWar(type: Copy) << {
-    description = 'Generate exploded war'
-    group = 'build'
-    dependsOn war.dependsOn
- 
-    into "${deploydir}"
-    with war
-}
-
-task tomcatShutdown << {
-	("${tomcatDir}/bin/shutdown.sh").execute()
-	for (cnt in 1..5 ) {
-		def pid = "ps -ef | grep ${tomcatDirName} | grep -v grep | awk '{print \$2}'".execute().text
-		if (pid == "") {
-			break
-		}
-		println "Process Still exist"
-		if (cnt == 5) {
-			println "Send Kill Signal Tomcat process"
-			("kill -9 " + pid).execute()
-		}
-	}
-	println "Stop Sucessfully"
-}
-
-task tomcatStartup << {
-	("${tomcatDir}/bin/startup.sh").execute()
+tomcat {
+    httpPort = 8080
+    contextPath = '/'
+    daemon = true
 }
 
 // source code encoding
