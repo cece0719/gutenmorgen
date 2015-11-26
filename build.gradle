@@ -78,4 +78,4 @@ tomcat {
 }
 
 // source code encoding
-[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+[compileJava, compileTestJava]*.options*.encoding = "UTF-8"

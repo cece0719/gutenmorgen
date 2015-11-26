@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.woowol.gutenmorgen.bo.JobBO;
 import com.woowol.gutenmorgen.bo.ProcessorBO;
 import com.woowol.gutenmorgen.bo.ScheduleBO;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class HomeController {
