@@ -73,8 +73,7 @@ allprojects {
 task explodedWar(type: Copy) << {
     dependsOn war.dependsOn
 
-    into "deploy/"
-    with war
+    ant.unzip(src: war.archivePath, dest: "../deploy")
 }
 
 // source code encoding
