@@ -94,7 +94,7 @@ task tomcatShutdown << {
 }
 
 task tomcatStartup << {
-    ("${tomcatDir}/startup.sh").execute()
+    ("${tomcatDir}/bin/startup.sh").execute()
 }
 
 // source code encoding
