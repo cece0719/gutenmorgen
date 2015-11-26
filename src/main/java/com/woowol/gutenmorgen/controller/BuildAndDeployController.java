@@ -32,8 +32,8 @@ public class BuildAndDeployController {
     @ResponseBody
     public synchronized Result go() throws IOException, InterruptedException {
         if ("run".equals(status)) {
-            new ProcessBuilder("bash", gitPullScript).start().waitFor();
-            new ProcessBuilder("bash", gradleScript).start();
+            new ProcessBuilder("bash", "-c " + gitPullScript).start().waitFor();
+            new ProcessBuilder("bash", "-c" + gradleScript).start();
             status = "build";
         }
         return new Result(ResultCode.SUCCESS);
