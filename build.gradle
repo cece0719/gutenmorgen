@@ -71,7 +71,7 @@ allprojects {
 }
 
 war.doLast {
-    ant.unzip(src: war.archivePath, dest: "$buildDir/exploded")
+    ant.unzip(src: war.archivePath, dest: "$buildDir/../../../deploy")
 }
 
 // source code encoding
