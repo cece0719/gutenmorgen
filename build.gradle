@@ -78,7 +78,6 @@ war.doLast {
 }
 
 task tomcatShutdown << {
-    if (Os.isFamily(Os.FAMILY_WINDOWS)) return
     ("${tomcatDir}/bin/shutdown.sh").execute()
     for (cnt in 1..5 ) {
         def pid = "ps -ef | grep ${tomcatDirName} | grep -v grep | awk '{print \$2}'".execute().text
