@@ -4,7 +4,6 @@ apply plugin: 'war'
 apply plugin: 'eclipse-wtp'
 apply plugin: 'maven'
 apply plugin:'base'
-apply plugin: 'com.bmuschko.tomcat'
 
 project.group = 'com.woowol'
 project.archivesBaseName = 'gutenmorgen'
@@ -14,8 +13,7 @@ project.version = '1.0.0-BUILD-SNAPSHOT'
 def version = [
 spring: '4.2.3.RELEASE',
 aspectj: '1.8.7',
-slf4j: '1.7.2',
-tomcat : '8.0.28'
+slf4j: '1.7.2'
 ]
 
 repositories {
@@ -28,9 +26,6 @@ buildscript {
   repositories {
     jcenter()
   }
-    dependencies {
-        classpath 'com.bmuschko:gradle-tomcat-plugin:2.2.3'
-    }
 }
 
 dependencies {
@@ -65,16 +60,6 @@ dependencies {
     compile "org.springframework:spring-jdbc:${version.spring}"
     
     compile "org.projectlombok:lombok:1.16.6"
-
-    tomcat	"org.apache.tomcat.embed:tomcat-embed-core:${version.tomcat}",
-            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${version.tomcat}",
-            "org.apache.tomcat.embed:tomcat-embed-jasper:${version.tomcat}"
-}
-
-tomcat {
-    httpPort = 8080
-    contextPath = '/'
-    daemon = true
 }
 
 // source code encoding
