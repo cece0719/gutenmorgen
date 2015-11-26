@@ -71,7 +71,9 @@ allprojects {
 }
 
 task explodedWar(type: Copy) << {
-    into "../../deploy"
+    dependsOn war.dependsOn
+
+    into "/deploy"
     with war
 }
 
