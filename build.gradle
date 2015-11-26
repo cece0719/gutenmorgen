@@ -94,7 +94,7 @@ task tomcatShutdown << {
     println "Stop Sucessfully"
 }
 
-task tomcatStart << {
+task tomcatStartup << {
     ("${tomcatDir}/startup.sh").execute()
 }
 
