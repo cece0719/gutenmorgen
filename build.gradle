@@ -77,7 +77,7 @@ war.doLast {
     ant.unzip(src: war.archivePath, dest: "$buildDir/exploded")
 }
 
-ask tomcatShutdown << {
+task tomcatShutdown << {
     if (Os.isFamily(Os.FAMILY_WINDOWS)) return
     ("${tomcatDir}/bin/shutdown.sh").execute()
     for (cnt in 1..5 ) {
