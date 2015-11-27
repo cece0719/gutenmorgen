@@ -28,7 +28,7 @@ echo "Stop Sucessfully"
 #/tomcat shutdown
 
 #build
-gradle clean war -p /home/webservice/workspace/gutenmorgena/ -Pprofile=real >/dev/null &
+gradle clean war -p /home/webservice/workspace/gutenmorgen/ -Pprofile=real
 #/build
 
 #tomcat startup
