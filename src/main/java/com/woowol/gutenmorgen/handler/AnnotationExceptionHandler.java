@@ -2,7 +2,7 @@ package com.woowol.gutenmorgen.handler;
 
 import com.woowol.gutenmorgen.exception.ResultException;
 import com.woowol.gutenmorgen.model.Result;
-import com.woowol.gutenmorgen.model.Result.ResultCode;
+import com.woowol.gutenmorgen.model.Result.ReturnCode;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -26,7 +26,7 @@ public class AnnotationExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ModelAndView handleException(HttpServletRequest request, Exception e) {
-        ModelAndView mav = getModelAndView(new Result(ResultCode.UNKNOWN_ERROR, ExceptionUtils.getStackTrace(e)));
+        ModelAndView mav = getModelAndView(new Result(ReturnCode.UNKNOWN_ERROR, ExceptionUtils.getStackTrace(e)));
         setView(request, mav);
         return mav;
     }

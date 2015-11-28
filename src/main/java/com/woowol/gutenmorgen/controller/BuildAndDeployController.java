@@ -1,16 +1,14 @@
 package com.woowol.gutenmorgen.controller;
 
 import com.woowol.gutenmorgen.model.Result;
-import com.woowol.gutenmorgen.model.Result.ResultCode;
+import com.woowol.gutenmorgen.model.Result.ReturnCode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 @Controller
 @RequestMapping(value = "/buildAndDeploy")
@@ -23,7 +21,7 @@ public class BuildAndDeployController {
     @RequestMapping(value = "/status.json")
     @ResponseBody
     public Result healthCheck(Model model) {
-        return new Result(ResultCode.SUCCESS, status);
+        return new Result(ReturnCode.SUCCESS, status);
     }
 
     @RequestMapping(value = "/go.json")
@@ -33,6 +31,6 @@ public class BuildAndDeployController {
             new ProcessBuilder("bash", script).start();
             status = "build";
         }
-        return new Result(ResultCode.SUCCESS);
+        return new Result(ReturnCode.SUCCESS);
     }
 }

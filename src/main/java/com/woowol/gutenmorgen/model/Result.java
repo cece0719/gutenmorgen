@@ -1,6 +1,8 @@
 package com.woowol.gutenmorgen.model;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 public class Result {
     @Getter
@@ -8,42 +10,27 @@ public class Result {
     @Getter
     private Object retMsg;
 
-    public Result(ResultCode resultCode) {
-        this.retCode = resultCode.getCode();
-        this.retMsg = resultCode.getRetMsg();
-    }
-
-    public Result(ResultCode resultCode, Object retMsg) {
-        this.retCode = resultCode.getCode();
+    public Result(ReturnCode returnCode, Object retMsg) {
+        this.retCode = returnCode.getRetCode();
         this.retMsg = retMsg;
-        if (!resultCode.equals(ResultCode.SUCCESS)) {
-            this.retMsg = resultCode.getRetMsg() + " : " + this.retMsg;
+        if (!returnCode.equals(ReturnCode.SUCCESS)) {
+            this.retMsg = returnCode.getRetMsg() + " : " + this.retMsg;
         }
     }
 
+    public Result(ReturnCode returnCode) {
+        this.retCode = returnCode.getRetCode();
+        this.retMsg = returnCode.getRetMsg();
+    }
 
-    public enum ResultCode {
+    @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+    public enum ReturnCode {
         SUCCESS("0", "SUCCESS"),
         UNKNOWN_ERROR("9999", "알수없는 오류");
 
-        private String retCode;
-        private String retMsg;
-
-        ResultCode(String retCode, String retMsg) {
-            this.retCode = retCode;
-            this.retMsg = retMsg;
-        }
-
-        public String getCode() {
-            return retCode;
-        }
-
-        public String getRetCode() {
-            return retCode;
-        }
-
-        public String getRetMsg() {
-            return retMsg;
-        }
+        @Getter
+        private final String retCode;
+        @Getter
+        private final String retMsg;
     }
 }
