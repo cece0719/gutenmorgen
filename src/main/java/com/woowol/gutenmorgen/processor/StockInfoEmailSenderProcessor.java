@@ -2,6 +2,7 @@ package com.woowol.gutenmorgen.processor;
 
 import com.woowol.gutenmorgen.bo.SendMailBO;
 import com.woowol.gutenmorgen.processor.StockInfoEmailSenderProcessor.Parameter;
+import lombok.Data;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -26,7 +27,7 @@ public class StockInfoEmailSenderProcessor extends Processor<Parameter> {
     public static final String WIN = "승!리!의!";
 
     @Autowired
-    SendMailBO sendMailBO;
+    private SendMailBO sendMailBO;
 
     @Override
     public void process(Parameter parameter) throws Exception {
@@ -87,24 +88,9 @@ public class StockInfoEmailSenderProcessor extends Processor<Parameter> {
         return result;
     }
 
+    @Data
     public static class Parameter {
         private List<String> stockList;
         private List<String> emailList;
-
-        public List<String> getStockList() {
-            return stockList;
-        }
-
-        public void setStockList(List<String> stockList) {
-            this.stockList = stockList;
-        }
-
-        public List<String> getEmailList() {
-            return emailList;
-        }
-
-        public void setEmailList(List<String> emailList) {
-            this.emailList = emailList;
-        }
     }
 }

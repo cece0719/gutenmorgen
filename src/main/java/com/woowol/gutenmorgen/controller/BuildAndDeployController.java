@@ -15,10 +15,8 @@ import java.io.InputStreamReader;
 @Controller
 @RequestMapping(value = "/buildAndDeploy")
 public class BuildAndDeployController {
-    @Value("${buildAndDeploy.script.gradle}")
-    private String gradleScript;
-    @Value("${buildAndDeploy.script.gitPull}")
-    private String gitPullScript;
+    @Value("${buildAndDeploy.script}")
+    private String script;
 
     private String status = "run";
 
@@ -31,13 +29,8 @@ public class BuildAndDeployController {
     @RequestMapping(value = "/go.json")
     @ResponseBody
     public synchronized Result go() throws IOException, InterruptedException {
-        System.out.println("abc");
-
         if ("run".equals(status)) {
-            System.out.println("def");
-            new ProcessBuilder("bash", "-c " + gitPullScript).start().waitFor();
-            System.out.println("fasfas");
-            new ProcessBuilder("bash", "-c" + gradleScript).start();
+            new ProcessBuilder("bash", script).start();
             status = "build";
         }
         return new Result(ResultCode.SUCCESS);

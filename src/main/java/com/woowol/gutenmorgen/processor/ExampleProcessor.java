@@ -1,6 +1,7 @@
 package com.woowol.gutenmorgen.processor;
 
 import com.woowol.gutenmorgen.processor.ExampleProcessor.Parameter;
+import lombok.Data;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,24 +14,9 @@ public class ExampleProcessor extends Processor<Parameter> {
         parameter.getListParameter();
     }
 
+    @Data
     public static class Parameter {
         private String parameter;
         private List<String> listParameter;
-
-        public String getParameter() {
-            return parameter;
-        }
-
-        public void setParameter(String parameter) {
-            this.parameter = parameter;
-        }
-
-        public List<String> getListParameter() {
-            return listParameter;
-        }
-
-        public void setListParameter(List<String> listParameter) {
-            this.listParameter = listParameter;
-        }
     }
 }
