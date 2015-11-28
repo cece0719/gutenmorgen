@@ -15,12 +15,7 @@ public class ProcessorBO {
         return processorMap;
     }
 
-    public void process(String processorName, String parameter) {
-        try {
-            Processor<?> processor = processorMap.get(processorName);
-            processor.processByStringParameter(parameter);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void process(String processorName, String parameter) throws Exception {
+        processorMap.get(processorName).process(parameter);
     }
 }

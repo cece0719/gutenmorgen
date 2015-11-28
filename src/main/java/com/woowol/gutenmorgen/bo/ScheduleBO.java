@@ -2,6 +2,10 @@ package com.woowol.gutenmorgen.bo;
 
 import com.woowol.gutenmorgen.dao.ScheduleDAO;
 import com.woowol.gutenmorgen.model.Schedule;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -11,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@Slf4j
 public class ScheduleBO {
     @Autowired
     private ScheduleDAO scheduleDAO;
@@ -44,15 +49,15 @@ public class ScheduleBO {
 
     @Scheduled(fixedRate = 1000)
     public void checkScheduleAsync() {
-        new Thread(new Runnable() {
-            public void run() {
-                for (Schedule schedule : scheduleDAO.selectList()) {
-                    String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-                    if (currentTime.matches(schedule.getTimeRegex())) {
-                        jobBO.execute(schedule.getJob().getJobKey());
-                    }
+        for (Schedule schedule : scheduleDAO.selectList()) {
+            String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+            if (currentTime.matches(schedule.getTimeRegex())) {
+                try {
+                    jobBO.execute(schedule.getJob().getJobKey());
+                } catch (Exception e) {
+                    log.error("job 실행 오류", e);
                 }
             }
-        }).start();
+        }
     }
 }

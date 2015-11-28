@@ -33,7 +33,7 @@ public class JobController {
     }
 
     @RequestMapping(value = "/execute/{jobKey}")
-    public String execute(@PathVariable String jobKey, Model model) {
+    public String execute(@PathVariable String jobKey, Model model) throws Exception {
         jobBO.execute(jobKey);
         return "redirect:/";
     }

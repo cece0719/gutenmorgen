@@ -29,7 +29,7 @@ public class JobBO {
         JobDAO.delete(job);
     }
 
-    public void execute(String jobKey) {
+    public void execute(String jobKey) throws Exception {
         Job job = new Job();
         job.setJobKey(jobKey);
         job = JobDAO.selectOne(job);
