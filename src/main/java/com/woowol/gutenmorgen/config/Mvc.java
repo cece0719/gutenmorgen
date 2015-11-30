@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -14,8 +16,6 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import java.util.Properties;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 @Configuration
 @ComponentScan(basePackages = "com.woowol.gutenmorgen", excludeFilters = @ComponentScan.Filter(Configuration.class))
@@ -50,9 +50,11 @@ public class Mvc extends WebMvcConfigurerAdapter {
                 .setCachePeriod(31556926);
     }
 
-    @Bean(destroyMethod = "shutdown")
-    public Executor taskScheduler() {
-        return Executors.newScheduledThreadPool(10);
+    @Bean
+    public TaskScheduler taskScheduler() {
+        return new ThreadPoolTaskScheduler() {{
+            setPoolSize(10);
+        }};
     }
 
     @Bean
