@@ -10,6 +10,7 @@ public abstract class Processor<T> {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @SuppressWarnings("unchecked")
     public void process(String jsonString) throws Exception {
         process(objectMapper.readValue(jsonString, (Class<T>)GenericTypeResolver.resolveTypeArgument(getClass(), Processor.class)));
     }
