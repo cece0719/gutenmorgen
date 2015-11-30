@@ -12,7 +12,7 @@ public class ResultException extends Exception {
         this.result = result;
     }
 
-    ResultException(ReturnCode resultCode) {
+    public ResultException(ReturnCode resultCode) {
         this.result = new Result(resultCode);
     }
 
