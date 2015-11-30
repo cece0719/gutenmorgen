@@ -4,7 +4,6 @@ import com.woowol.gutenmorgen.bo.JobBO;
 import com.woowol.gutenmorgen.bo.ProcessorBO;
 import com.woowol.gutenmorgen.bo.ScheduleBO;
 import com.woowol.gutenmorgen.exception.ResultException;
-import com.woowol.gutenmorgen.model.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
