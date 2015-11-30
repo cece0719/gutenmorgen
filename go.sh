@@ -4,9 +4,9 @@ TOMCATDIRNAME=tomcat
 TOMCATDIR=$HOME/apps/$TOMCATDIRNAME
 SCRIPT=$(readlink -f "$0")
 WORKSPACE=$(dirname "$SCRIPT")
+NOW_TIME=`date +%Y%m%d%H%M%S`
 
 #gitclone
-NOW_TIME=`date +%Y%m%d%H%M%S`
 git clone https://github.com/cece0719/gutenmorgen.git /home/webservice/workspace/gutenmorgen_$NOW_TIME
 #/gitclone
 
