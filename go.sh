@@ -5,9 +5,14 @@ TOMCATDIR=$HOME/apps/$TOMCATDIRNAME
 SCRIPT=$(readlink -f "$0")
 WORKSPACE=$(dirname "$SCRIPT")
 
-#gitpull
-git --work-tree=/home/webservice/workspace/gutenmorgen --git-dir=/home/webservice/workspace/gutenmorgen/.git pull
-#/gitpull
+#gitclone
+NOW_TIME=`date +%Y%m%d%H%M%S`
+git clone https://github.com/cece0719/gutenmorgen.git /home/webservice/workspace/gutenmorgen_$NOW_TIME
+#/gitclone
+
+#build
+gradle clean war -p /home/webservice/workspace/gutenmorgen_$NOW_TIME/ -Pprofile=real
+#/build
 
 #tomcat shutdown
 $TOMCATDIR/bin/shutdown.sh
@@ -27,9 +32,10 @@ done
 echo "Stop Sucessfully"
 #/tomcat shutdown
 
-#build
-gradle clean war -p /home/webservice/workspace/gutenmorgen/ -Pprofile=real
-#/build
+#link
+rm /home/webservice/workspace/gutenmorgen
+ln -s /home/webservice/workspace/gutenmorgen_$NOW_TIME /home/webservice/workspace/gutenmorgen
+#.link
 
 #tomcat startup
 $TOMCATDIR/bin/startup.sh
