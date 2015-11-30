@@ -35,6 +35,8 @@ echo "Stop Sucessfully"
 #link
 rm /home/webservice/workspace/gutenmorgen
 ln -s /home/webservice/workspace/gutenmorgen_$NOW_TIME /home/webservice/workspace/gutenmorgen
+
+ls /home/webservice/workspace | grep gutenmorgen_ | head -n -3 | xargs rm -rf
 #.link
 
 #tomcat startup
