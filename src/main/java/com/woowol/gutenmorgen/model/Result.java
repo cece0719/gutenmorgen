@@ -26,7 +26,8 @@ public class Result {
     @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
     public enum ReturnCode {
         SUCCESS("0", "SUCCESS"),
-        UNKNOWN_ERROR("9999", "알수없는 오류");
+        UNKNOWN_ERROR("9999", "알수없는 오류"),
+        ENVIRONMENT_ERROR("0001", "로컬환경에선 지원되지 않습니다.");
 
         @Getter
         private final String retCode;
