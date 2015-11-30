@@ -7,7 +7,7 @@
 			<th>번호</th>
 			<th>이름</th>
 			<th>JOB</th>
-			<th>time regex(yyyy-MM-dd HH:mm:ss)</th>
+			<th>time regex(yyyy-MM-dd HH:mm:ss EEE , Locale : ko_KR)</th>
 			<th>수정</th>
 			<th>삭제</th>
 		</tr>
@@ -50,7 +50,7 @@
 					</td>
 				</tr>
 				<tr>
-					<th>time regex(yyyy-MM-dd HH:mm:ss)</th>
+					<th>time regex(yyyy-MM-dd HH:mm:ss EEE , Locale : ko_KR)</th>
 					<td><input name="timeRegex" type="text"></td>
 				</tr>
 			</table>
