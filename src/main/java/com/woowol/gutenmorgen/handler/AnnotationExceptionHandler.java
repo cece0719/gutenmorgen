@@ -33,8 +33,8 @@ public class AnnotationExceptionHandler {
 
     private ModelAndView getModelAndView(Result result) {
         ModelAndView mav = new ModelAndView();
-        mav.addObject("retCode", result.getRetCode());
-        mav.addObject("retMsg", result.getRetMsg());
+        mav.addObject("rtnCode", result.getRtnCode());
+        mav.addObject("rtnMsg", result.getRtnMsg());
         return mav;
     }
 

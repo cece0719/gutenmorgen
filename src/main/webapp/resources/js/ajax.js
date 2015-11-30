@@ -3,10 +3,10 @@ $ajax = {
 		var originSuccess = param.success;
 		var originError = param.error;
 		param.success = function(data) {
-			if (data.retCode === '0' && typeof originSuccess === 'function') {
+			if (data.rtnCode === '0' && typeof originSuccess === 'function') {
 				originSuccess(data);
-			} else if (data.retCode !== '0' && typeof originError === 'function') {
-				originError('[' + data.retCode + ']' + data.retMsg);
+			} else if (data.rtnCode !== '0' && typeof originError === 'function') {
+				originError('[' + data.rtnCode + ']' + data.rtnMsg);
 			}
 		};
 		param.error = function(request, status, error) {

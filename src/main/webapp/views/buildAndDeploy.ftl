@@ -44,7 +44,7 @@
 							url : '/buildAndDeploy/status.json',
 							timeout : 1000,
 							success : function(data) {
-								if (data.retMsg==='run') {
+								if (data.rtnMsg==='run') {
 									$('#bad_text').html('완료');
 									location.reload();
 								}

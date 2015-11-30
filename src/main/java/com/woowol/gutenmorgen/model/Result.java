@@ -6,21 +6,21 @@ import lombok.RequiredArgsConstructor;
 
 public class Result {
     @Getter
-    private String retCode;
+    private String rtnCode;
     @Getter
-    private Object retMsg;
+    private Object rtnMsg;
 
-    public Result(ReturnCode returnCode, Object retMsg) {
-        this.retCode = returnCode.getRetCode();
-        this.retMsg = retMsg;
+    public Result(ReturnCode returnCode, Object rtnMsg) {
+        this.rtnCode = returnCode.getRtnCode();
+        this.rtnMsg = rtnMsg;
         if (!returnCode.equals(ReturnCode.SUCCESS)) {
-            this.retMsg = returnCode.getRetMsg() + " : " + this.retMsg;
+            this.rtnMsg = returnCode.getRtnMsg() + " : " + this.rtnMsg;
         }
     }
 
     public Result(ReturnCode returnCode) {
-        this.retCode = returnCode.getRetCode();
-        this.retMsg = returnCode.getRetMsg();
+        this.rtnCode = returnCode.getRtnCode();
+        this.rtnMsg = returnCode.getRtnMsg();
     }
 
     @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -30,8 +30,8 @@ public class Result {
         ENVIRONMENT_ERROR("0001", "현재 환경에선 지원되지 않습니다.");
 
         @Getter
-        private final String retCode;
+        private final String rtnCode;
         @Getter
-        private final String retMsg;
+        private final String rtnMsg;
     }
 }
