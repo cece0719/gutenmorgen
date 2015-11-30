@@ -22,7 +22,7 @@ public class HomeController {
     public String home(Model model) throws ResultException {
         model.addAttribute("processorMap", processorBO.getProcessorMap());
         model.addAttribute("jobList", jobBO.getJobList());
-        model.addAttribute("scheduleList", scheduleBO.getSchduleList());
+        model.addAttribute("scheduleList", scheduleBO.getScheduleList());
         return "home";
     }
 }

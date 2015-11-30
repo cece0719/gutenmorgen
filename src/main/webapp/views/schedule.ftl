@@ -83,7 +83,7 @@
 					</td>
 				</tr>
 				<tr>
-					<th>time regex(yyyy-MM-dd HH:mm:ss)</th>
+					<th>time regex(yyyy-MM-dd HH:mm:ss EEE , Locale : ko_KR)</th>
 					<td><input name="timeRegex" type="text"></td>
 				</tr>
 			</table>
