@@ -1,12 +1,11 @@
 package com.woowol.gutenmorgen.processor;
 
 import com.woowol.gutenmorgen.bo.SendMailBO;
-import com.woowol.gutenmorgen.processor.StockInfoEmailSenderProcessor.Parameter;
+import com.woowol.gutenmorgen.processor.StockInfoEmailSenderProcessor.Parameters;
 import lombok.Data;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -22,7 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 
 @Service
-public class StockInfoEmailSenderProcessor extends Processor<Parameter> {
+public class StockInfoEmailSenderProcessor extends Processor<Parameters> {
     public static final String LOSE = "패!배!의!";
     public static final String WIN = "승!리!의!";
 
@@ -30,7 +29,12 @@ public class StockInfoEmailSenderProcessor extends Processor<Parameter> {
     private SendMailBO sendMailBO;
 
     @Override
-    public void process(Parameter parameter) throws Exception {
+    public String getName() {
+        return "주식정보 메일전송";
+    }
+
+    @Override
+    public void process(Parameters parameter) throws Exception {
         for (String stock : parameter.getStockList()) {
             for (String email : parameter.getEmailList()) {
                 sendMailBO.sendMail(email, printPrice(stock), "");
@@ -89,7 +93,7 @@ public class StockInfoEmailSenderProcessor extends Processor<Parameter> {
     }
 
     @Data
-    public static class Parameter {
+    public static class Parameters {
         private List<String> stockList;
         private List<String> emailList;
     }

@@ -16,7 +16,7 @@
 		<tr>
 			<td>${job.jobKey?html}</td>
 			<td>${job.name?html}</td>
-			<td>${job.processor?html}</td>
+			<td>${processorMap[job.processor].name?html}</td>
 			<td>${job.parameter?html}</td>
 			<td><button onclick="$job.execute('${job.jobKey?html}')">실행</button></td>
 			<td><button onclick="$job.showUpdatePopup('${job.jobKey?html}', '${job.name?html}', '${job.processor?html}', '${job.parameter?html}')">수정</button></td>
@@ -44,7 +44,7 @@
 					<td>
 						<select name="processor">
 							<#list processorMap?keys as key>
-							<option value="${key?html}">${key?html}</option>
+							<option value="${key?html}">${processorMap[key].name?html}</option>
 							</#list>
 						</select>
 					</td>
@@ -77,7 +77,7 @@
 					<td>
 						<select name="processor">
 							<#list processorMap?keys as key>
-							<option value="${key?html}">${key?html}</option>
+							<option value="${key?html}">${processorMap[key].name?html}</option>
 							</#list>
 						</select>
 					</td>
