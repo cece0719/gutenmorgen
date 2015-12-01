@@ -32,7 +32,7 @@ public class StockInfoSmsSenderProcessor extends Processor<Parameters> {
 
     @Override
     public String getName() {
-        return "주식정보 메일전송";
+        return "주식정보 SMS전송";
     }
 
     @Override
