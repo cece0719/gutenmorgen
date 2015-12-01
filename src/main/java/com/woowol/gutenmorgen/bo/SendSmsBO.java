@@ -11,7 +11,7 @@ public class SendSmsBO {
         ApiClass api = new ApiClass(api_id, api_key);
 
         byte[] b = content.getBytes();
-        content = new String(b, 0, Math.max(80, b.length-1));
+        content = new String(b, 0, Math.min(80, b.length-1));
         String arr[] = new String[7];
         arr[0] = "sms";								// 발송 타입 sms or lms
         arr[1] = String.valueOf(System.currentTimeMillis());// 결과 확인을 위한 KEY ( 중복되지 않도록 생성하여 전달해 주시기 바랍니다. )
