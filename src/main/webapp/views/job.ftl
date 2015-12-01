@@ -277,8 +277,6 @@
 			var parameterObject = jQuery.parseJSON(parameter);
             for (var key in parameterObject) {
                 if (parameterObject.hasOwnProperty(key)) {
-                    console.log('this is fog (' + key + ') for sure. Value: ' + parameterObject[key]);
-					console.log(parameterObject[key] instanceof Array);
 					if (parameterObject[key] instanceof Array) {
 						parameterObject[key].forEach(function(value) {
                             $('#job_update>div>div>table[processor='+processorKey+']>tbody>tr>td>[parameterId='+key+']').append('<option>'+value+'</option>');
