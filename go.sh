@@ -37,7 +37,7 @@ rm /home/webservice/workspace/gutenmorgen
 ln -s /home/webservice/workspace/gutenmorgen_$NOW_TIME /home/webservice/workspace/gutenmorgen
 
 ls -d -1 /home/webservice/workspace/** | grep gutenmorgen_ | head -n -3 | xargs rm -rf
-#/link
+#/-link
 
 #tomcat startup
 $TOMCATDIR/bin/startup.sh

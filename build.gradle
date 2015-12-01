@@ -56,6 +56,8 @@ dependencies {
     compile "org.springframework:spring-jdbc:${version.spring}"
     
     compile "org.projectlombok:lombok:1.16.6"
+    compile "org.apache.xmlrpc:xmlrpc-client:3.1.3"
+
 }
 
 final String DEFAULT_PROFILE = 'local'
