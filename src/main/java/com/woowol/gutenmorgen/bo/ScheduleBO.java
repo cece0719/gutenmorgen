@@ -19,6 +19,8 @@ public class ScheduleBO {
     private ScheduleDAO scheduleDAO;
     @Autowired
     private JobBO jobBO;
+    @Autowired
+    private EnvironmentBO environmentBO;
 
     private List<Schedule> cashedScheduleList;
 
@@ -62,6 +64,7 @@ public class ScheduleBO {
             String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss EEE", new Locale("ko", "KR")).format(new Date());
             if (currentTime.matches(schedule.getTimeRegex())) {
                 try {
+                    environmentBO.checkNotLocal();
                     jobBO.execute(schedule.getJob().getJobKey());
                 } catch (Exception e) {
                     log.error("job 실행 오류", e);
