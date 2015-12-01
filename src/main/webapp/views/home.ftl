@@ -77,6 +77,7 @@ th {
 	position:relative;
 	font-size: 18px;
 	background-color: #D3D3D3;
+	text-align: center;
 }
 button{
 	height:30px;

@@ -1,28 +1,30 @@
 <div class="card">
 	<table>
-		<tr>
-			<th colspan="7" class="title">SCHEDULE</th>
-		</tr>
-		<tr>
-			<th>번호</th>
-			<th>이름</th>
-			<th>JOB</th>
-			<th>time regex(yyyy-MM-dd HH:mm:ss EEE , Locale : ko_KR)</th>
-			<th>수정</th>
-			<th>삭제</th>
-		</tr>
-		<#assign i=0>
-		<#list scheduleList as schedule>
-		<tr>
-			<td>${schedule.scheduleKey?html}</td>
-			<td>${schedule.name?html}</td>
-			<td>${schedule.job.name?html}</td>
-			<td>${schedule.timeRegex?html}</td>
-			<td><button onclick="$schedule.showUpdatePopup('${schedule.scheduleKey?html}','${schedule.name?html}', '${schedule.job.jobKey?html}', '${schedule.timeRegex?html}')">수정</button></td>
-			<td><button onclick="$schedule.remove('${schedule.scheduleKey?html}')">삭제</button></td>
-		</tr>
-		<#assign i=i+1>
-		</#list>
+		<tbody>
+			<tr>
+				<th colspan="7" class="title">SCHEDULE</th>
+			</tr>
+			<tr>
+				<th>번호</th>
+				<th>이름</th>
+				<th>JOB</th>
+				<th>time regex(yyyy-MM-dd HH:mm:ss EEE , Locale : ko_KR)</th>
+				<th>수정</th>
+				<th>삭제</th>
+			</tr>
+			<#assign i=0>
+			<#list scheduleList as schedule>
+			<tr>
+				<td>${schedule.scheduleKey?html}</td>
+				<td>${schedule.name?html}</td>
+				<td>${schedule.job.name?html}</td>
+				<td>${schedule.timeRegex?html}</td>
+				<td><button onclick="$schedule.showUpdatePopup('${schedule.scheduleKey?html}','${schedule.name?html}', '${schedule.job.jobKey?html}', '${schedule.timeRegex?html}')">수정</button></td>
+				<td><button onclick="$schedule.remove('${schedule.scheduleKey?html}')">삭제</button></td>
+			</tr>
+			<#assign i=i+1>
+			</#list>
+        </tbody>
 	</table>
 	<div class="button">
 		<button onclick="$schedule.showRegisterPopup();">신규등록</button>
@@ -32,27 +34,29 @@
 	<div class="dimmed">
 		<div class="popup">
 			<table>
-				<tr>
-					<th colspan="2" class="title">SCHEDULE - 신규등록<button type="button" class="cancel" onclick="$schedule.hideRegisterPopup();">X</button></th>
-				</tr>
-				<tr>
-					<th>이름</th>
-					<td><input name="name" type="text"></td>
-				</tr>
-				<tr>
-					<th>JOB</th>
-					<td>
-						<select name="jobKey">
-							<#list jobList as job>
-							<option value="${job.jobKey?html}">${job.name?html}</option>
-							</#list>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<th>time regex(yyyy-MM-dd HH:mm:ss EEE , Locale : ko_KR)</th>
-					<td><input name="timeRegex" type="text"></td>
-				</tr>
+				<tbody>
+					<tr>
+						<th colspan="2" class="title">SCHEDULE - 신규등록<button type="button" class="cancel" onclick="$schedule.hideRegisterPopup();">X</button></th>
+					</tr>
+					<tr>
+						<th>이름</th>
+						<td><input name="name" type="text"></td>
+					</tr>
+					<tr>
+						<th>JOB</th>
+						<td>
+							<select name="jobKey">
+								<#list jobList as job>
+								<option value="${job.jobKey?html}">${job.name?html}</option>
+								</#list>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th>time regex(yyyy-MM-dd HH:mm:ss EEE , Locale : ko_KR)</th>
+						<td><input name="timeRegex" type="text"></td>
+					</tr>
+                </tbody>
 			</table>
 			<div class="button">
 				<button type="button" onclick="$schedule.register()">등록</button>
@@ -65,27 +69,29 @@
 	<div class="dimmed">
 		<div class="popup">
 			<table>
-				<tr>
-					<th colspan="2" class="title">SCHEDULE - 수정<button type="button" class="cancel" onclick="$schedule.hideUpdatePopup();">X</button></th>
-				</tr>
-				<tr>
-					<th>이름</th>
-					<td><input name="name" type="text"></td>
-				</tr>
-				<tr>
-					<th>JOB</th>
-					<td>
-						<select name="jobKey">
-							<#list jobList as job>
-							<option value="${job.jobKey?html}">${job.name?html}</option>
-							</#list>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<th>time regex(yyyy-MM-dd HH:mm:ss EEE , Locale : ko_KR)</th>
-					<td><input name="timeRegex" type="text"></td>
-				</tr>
+				<tbody>
+					<tr>
+						<th colspan="2" class="title">SCHEDULE - 수정<button type="button" class="cancel" onclick="$schedule.hideUpdatePopup();">X</button></th>
+					</tr>
+					<tr>
+						<th>이름</th>
+						<td><input name="name" type="text"></td>
+					</tr>
+					<tr>
+						<th>JOB</th>
+						<td>
+							<select name="jobKey">
+								<#list jobList as job>
+								<option value="${job.jobKey?html}">${job.name?html}</option>
+								</#list>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th>time regex(yyyy-MM-dd HH:mm:ss EEE , Locale : ko_KR)</th>
+						<td><input name="timeRegex" type="text"></td>
+					</tr>
+                </tbody>
 			</table>
 			<div class="button">
 				<button type="button" onclick="$schedule.update()">수정</button>
