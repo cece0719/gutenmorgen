@@ -4,21 +4,9 @@ import com.woowol.gutenmorgen.bo.SendMailBO;
 import com.woowol.gutenmorgen.bo.StockInfoBO;
 import com.woowol.gutenmorgen.processor.StockInfoEmailSenderProcessor.Parameters;
 import lombok.Data;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 
 @Service
