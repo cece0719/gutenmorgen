@@ -23,6 +23,6 @@ public class HomeController {
         model.addAttribute("processorMap", processorBO.getProcessorMap());
         model.addAttribute("jobList", jobBO.getJobList());
         model.addAttribute("scheduleList", scheduleBO.getScheduleList());
-        return "home";
+        return "/views/home";
     }
 }

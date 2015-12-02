@@ -1,3 +1,4 @@
+<button id="buildAndDeploy" onclick="$build.execute();">빌드&배포</button>
 <div id="bad_loading" style="display:none;">
 	<div id="bad_loading_circle"><div id="bad_text">빌드중</div></div>
 </div>

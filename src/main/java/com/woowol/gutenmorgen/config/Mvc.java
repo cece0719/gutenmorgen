@@ -15,8 +15,6 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
-import java.util.Properties;
-
 @SuppressWarnings("SpringFacetCodeInspection")
 @Configuration
 @ComponentScan(basePackages = "com.woowol.gutenmorgen", excludeFilters = @ComponentScan.Filter(Configuration.class))
@@ -36,10 +34,7 @@ public class Mvc extends WebMvcConfigurerAdapter {
     @Bean
     public FreeMarkerConfigurer freemarkerConfigurer() {
         return new FreeMarkerConfigurer() {{
-            setTemplateLoaderPath("/views/");
-            setFreemarkerSettings(new Properties() {{
-                setProperty("auto_import", "/spring.ftl as spring");
-            }});
+            setTemplateLoaderPath("/");
         }};
     }
 

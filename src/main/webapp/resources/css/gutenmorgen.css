@@ -17,10 +17,9 @@ body {
 
 #buildAndDeploy {
     position: absolute;
-    margin: auto;
     right: 15px;
+    top : 15px;
     bottom: 0;
-    top: 0;
     width: 130px;
     height: 30px;
     color: #fff;
