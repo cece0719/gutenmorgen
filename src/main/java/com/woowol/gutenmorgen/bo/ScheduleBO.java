@@ -59,9 +59,8 @@ public class ScheduleBO {
         if (cashedScheduleList == null) {
             updateCashedScheduleList();
         }
-
+        String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss EEE", new Locale("ko", "KR")).format(new Date());
         for (Schedule schedule : cashedScheduleList) {
-            String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss EEE", new Locale("ko", "KR")).format(new Date());
             if (currentTime.matches(schedule.getTimeRegex())) {
                 try {
                     environmentBO.checkNotLocal();
