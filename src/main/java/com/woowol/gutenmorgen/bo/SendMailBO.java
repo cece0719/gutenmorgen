@@ -13,8 +13,10 @@ import java.util.Properties;
 
 @Service
 public class SendMailBO {
-	@Value("${sendmail.gmail.id}") private String gmailId;
-	@Value("${sendmail.gmail.password}") private String gmailPassword;
+	@Value("${sendmail.gmail.id}")
+	private String gmailId;
+	@Value("${sendmail.gmail.password}")
+	private String gmailPassword;
 	
 	public void sendMail(String email, String subject, String content) throws MessagingException {
 		// Step1
