@@ -60,15 +60,14 @@ public class ScheduleBO {
             updateCashedScheduleList();
         }
         String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss EEE", new Locale("ko", "KR")).format(new Date());
-        for (Schedule schedule : cashedScheduleList) {
-            if (currentTime.matches(schedule.getTimeRegex())) {
-                try {
-                    environmentBO.checkNotLocal();
-                    jobBO.execute(schedule.getJob().getJobKey());
-                } catch (Exception e) {
-                    log.error("job 실행 오류", e);
-                }
+
+        cashedScheduleList.stream().filter(schedule -> currentTime.matches(schedule.getTimeRegex())).forEach(schedule -> {
+            try {
+                environmentBO.checkNotLocal();
+                jobBO.execute(schedule.getJob().getJobKey());
+            } catch (Exception e) {
+                log.error("job 실행 오류", e);
             }
-        }
+        });
     }
 }

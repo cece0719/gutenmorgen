@@ -168,8 +168,7 @@ public class SendSmsBO {
         for (byte aByte : md5Code) {
             sb.append(String.format("%02x", 0xff & (char) aByte));
         }
-        String md5 = sb.toString();
 
-        return md5;
+        return sb.toString();
     }
 }

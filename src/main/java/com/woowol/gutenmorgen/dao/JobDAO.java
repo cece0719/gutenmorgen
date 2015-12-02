@@ -16,7 +16,7 @@ public class JobDAO extends OltpBaseDAO<Job> {
         @SuppressWarnings("serial")
         Map<String, Object> map = new HashMap<String, Object>() {
             public Object put(String key, Object value) {
-                return value == null ? value : super.put(key, value);
+                return value == null ? null : super.put(key, value);
             }
         };
         map.put("jobKey", job.getJobKey());
