@@ -16,19 +16,19 @@ public class ScheduleController {
     private ScheduleBO scheduleBO;
 
     @RequestMapping(value = "/register")
-    public String register(@RequestParam("jobKey") String jobKey, Schedule schedule, Model model) {
+    public String register(@RequestParam("jobKey") String jobKey, Schedule schedule) {
         scheduleBO.register(schedule, jobKey);
         return "redirect:/";
     }
 
     @RequestMapping(value = "/update")
-    public String update(@RequestParam("jobKey") String jobKey, Schedule schedule, Model model) {
+    public String update(@RequestParam("jobKey") String jobKey, Schedule schedule) {
         scheduleBO.update(schedule, jobKey);
         return "redirect:/";
     }
 
     @RequestMapping(value = "/remove/{scheduleKey}")
-    public String remove(@PathVariable String scheduleKey, Model model) {
+    public String remove(@PathVariable String scheduleKey) {
         scheduleBO.remove(scheduleKey);
         return "redirect:/";
     }

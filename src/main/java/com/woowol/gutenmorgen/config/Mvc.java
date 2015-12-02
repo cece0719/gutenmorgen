@@ -17,6 +17,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import java.util.Properties;
 
+@SuppressWarnings("SpringFacetCodeInspection")
 @Configuration
 @ComponentScan(basePackages = "com.woowol.gutenmorgen", excludeFilters = @ComponentScan.Filter(Configuration.class))
 @EnableWebMvc

@@ -4,7 +4,6 @@ import com.woowol.gutenmorgen.bo.JobBO;
 import com.woowol.gutenmorgen.model.Job;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -15,25 +14,25 @@ public class JobController {
     private JobBO jobBO;
 
     @RequestMapping(value = "/register")
-    public String register(Job job, Model model) {
+    public String register(Job job) {
         jobBO.register(job);
         return "redirect:/";
     }
 
     @RequestMapping(value = "/update")
-    public String update(Job job, Model model) {
+    public String update(Job job) {
         jobBO.update(job);
         return "redirect:/";
     }
 
     @RequestMapping(value = "/remove/{jobKey}")
-    public String remove(@PathVariable String jobKey, Model model) {
+    public String remove(@PathVariable String jobKey) {
         jobBO.remove(jobKey);
         return "redirect:/";
     }
 
     @RequestMapping(value = "/execute/{jobKey}")
-    public String execute(@PathVariable String jobKey, Model model) throws Exception {
+    public String execute(@PathVariable String jobKey) throws Exception {
         jobBO.execute(jobKey);
         return "redirect:/";
     }

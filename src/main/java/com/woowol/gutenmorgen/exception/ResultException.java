@@ -8,7 +8,7 @@ public class ResultException extends Exception {
 
     private Result result;
 
-    ResultException(Result result) {
+    public ResultException(Result result) {
         this.result = result;
     }
 
@@ -16,7 +16,7 @@ public class ResultException extends Exception {
         this.result = new Result(resultCode);
     }
 
-    ResultException(ReturnCode returnCode, Object rtnMsg) {
+    public ResultException(ReturnCode returnCode, Object rtnMsg) {
         this.result = new Result(returnCode, rtnMsg);
     }
 
