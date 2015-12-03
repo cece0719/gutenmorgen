@@ -13,7 +13,11 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
-apply plugin: 'spring-boot' 
+apply plugin: 'spring-boot'
+
+bootRun {
+    jvmArgs = "-Djava.security.egd=file:/dev/urandom"
+}
 
 jar {
     baseName = 'gutenmorgen'
