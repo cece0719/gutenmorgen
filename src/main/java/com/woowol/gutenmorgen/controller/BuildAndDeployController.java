@@ -35,12 +35,12 @@ public class BuildAndDeployController {
     @ResponseBody
     public synchronized Result go() throws IOException, InterruptedException, ResultException {
         GutenmorgenApplication.ctx.close();
-//        environmentBO.checkNotLocal();
-//
-//        if ("run".equals(status)) {
-//            new ProcessBuilder("bash", script).start();
-//            status = "build";
-//        }
+        environmentBO.checkNotLocal();
+
+        if ("run".equals(status)) {
+            new ProcessBuilder("bash", script).start();
+            status = "build";
+        }
         return new Result(ReturnCode.SUCCESS);
     }
 }
