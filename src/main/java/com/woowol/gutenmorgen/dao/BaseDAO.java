@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
+@SuppressWarnings("unchecked")
 public abstract class BaseDAO<T> {
 
     private Class<T> clazz = (Class<T>) GenericTypeResolver.resolveTypeArgument(getClass(), BaseDAO.class);
@@ -17,7 +18,6 @@ public abstract class BaseDAO<T> {
         return entityManager.find(clazz, id);
     }
 
-    @SuppressWarnings("unchecked")
     public List<T> findAll() {
         return (List<T>)entityManager.createQuery("from " + clazz.getName()).getResultList();
     }
