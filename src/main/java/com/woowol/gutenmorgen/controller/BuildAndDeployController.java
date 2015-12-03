@@ -39,7 +39,6 @@ public class BuildAndDeployController {
         if ("run".equals(status)) {
             new ProcessBuilder("bash", script).start();
             status = "build";
-            GutenmorgenApplication.ctx.close();
         }
 
         return new Result(ReturnCode.SUCCESS);
