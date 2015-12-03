@@ -3,6 +3,7 @@ package com.woowol.gutenmorgen;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -12,9 +13,9 @@ import java.io.IOException;
 
 @SpringBootApplication
 public class GutenmorgenApplication {
-
+    public static ConfigurableApplicationContext ctx;
     public static void main(String[] args) {
-        SpringApplication.run(GutenmorgenApplication.class, args);
+        ctx = SpringApplication.run(GutenmorgenApplication.class, args);
     }
 
     @Bean

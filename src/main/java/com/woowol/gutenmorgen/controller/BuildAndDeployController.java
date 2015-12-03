@@ -1,5 +1,6 @@
 package com.woowol.gutenmorgen.controller;
 
+import com.woowol.gutenmorgen.GutenmorgenApplication;
 import com.woowol.gutenmorgen.bo.EnvironmentBO;
 import com.woowol.gutenmorgen.exception.ResultException;
 import com.woowol.gutenmorgen.model.Result;
@@ -33,12 +34,13 @@ public class BuildAndDeployController {
     @RequestMapping(value = "/go.json")
     @ResponseBody
     public synchronized Result go() throws IOException, InterruptedException, ResultException {
-        environmentBO.checkNotLocal();
-
-        if ("run".equals(status)) {
-            new ProcessBuilder("bash", script).start();
-            status = "build";
-        }
+        GutenmorgenApplication.ctx.close();
+//        environmentBO.checkNotLocal();
+//
+//        if ("run".equals(status)) {
+//            new ProcessBuilder("bash", script).start();
+//            status = "build";
+//        }
         return new Result(ReturnCode.SUCCESS);
     }
 }
