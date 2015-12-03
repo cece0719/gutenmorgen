@@ -1,5 +1,5 @@
 <#include "common/common.ftl">
-<@layout.default title="custom page title">
+<@layout.default>
     <div id="header">
         Guten Morgen
     </div>
