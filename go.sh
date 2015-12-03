@@ -18,7 +18,7 @@ while [ "x$PID" != "x" ] ; do
         echo "Waiting More..."
         let CNT=$CNT+1
         sleep 2
-        PID=`ps -ef | grep "\/$TOMCATDIRNAME\/" | grep -v grep | awk '{print $2}'`
+        PID=`ps -ef | grep "\/apps\/gutenmorgen\/" | grep -v grep | awk '{print $2}'`
 done
 echo "Stop Sucessfully"
 #/tomcat shutdown
