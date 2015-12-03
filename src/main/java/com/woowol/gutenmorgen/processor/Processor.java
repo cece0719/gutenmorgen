@@ -20,7 +20,7 @@ public abstract class Processor<T> {
     private ObjectMapper objectMapper;
 
     @SuppressWarnings("unchecked")
-    private Class<T> genericClass = (Class<T>)GenericTypeResolver.resolveTypeArgument(getClass(), Processor.class);
+    private Class<T> genericClass = (Class<T>) GenericTypeResolver.resolveTypeArgument(getClass(), Processor.class);
 
     @SuppressWarnings("unchecked")
     public void process(String jsonString) throws Exception {
@@ -55,8 +55,6 @@ public abstract class Processor<T> {
                 parameterInfoList.add(parameterInfo);
             }
         }
-        log.info("abc88");
-        log.info(String.valueOf(parameterInfoList));
         return parameterInfoList;
     }
 

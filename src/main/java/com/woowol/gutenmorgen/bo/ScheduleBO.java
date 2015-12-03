@@ -25,24 +25,20 @@ public class ScheduleBO {
     private List<Schedule> cashedScheduleList;
 
     public List<Schedule> getScheduleList() {
-        return scheduleDAO.selectList();
+        return scheduleDAO.findAll();
     }
 
     public void register(Schedule schedule, String jobKey) {
         schedule.setJob(jobBO.getJobByKey(jobKey));
-        scheduleDAO.persist(schedule);
+        scheduleDAO.create(schedule);
     }
 
     public void remove(String scheduleKey) {
-        Schedule schedule = new Schedule();
-        schedule.setScheduleKey(scheduleKey);
-        scheduleDAO.delete(schedule);
+        scheduleDAO.deleteById(scheduleKey);
     }
 
     public void update(Schedule schedule, String jobKey) {
-        Schedule originSchedule = new Schedule();
-        originSchedule.setScheduleKey(schedule.getScheduleKey());
-        originSchedule = scheduleDAO.selectOne(originSchedule);
+        Schedule originSchedule = scheduleDAO.findOne(schedule.getScheduleKey());
         originSchedule.setName(schedule.getName());
         originSchedule.setJob(jobBO.getJobByKey(jobKey));
         originSchedule.setTimeRegex(schedule.getTimeRegex());
@@ -51,7 +47,7 @@ public class ScheduleBO {
 
     @Scheduled(fixedRate = 60*1000)
     public void updateCashedScheduleList() {
-        cashedScheduleList = scheduleDAO.selectList();
+        cashedScheduleList = scheduleDAO.findAll();
     }
 
     @Scheduled(fixedRate = 1000)

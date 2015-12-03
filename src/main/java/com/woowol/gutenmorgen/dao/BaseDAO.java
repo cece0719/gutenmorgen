@@ -1,55 +1,40 @@
 package com.woowol.gutenmorgen.dao;
 
-import org.hibernate.Criteria;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.core.GenericTypeResolver;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.Map;
 
-@Transactional
 public abstract class BaseDAO<T> {
-    abstract public SessionFactory getSessionFactory();
 
-    abstract public Map<String, ?> createMapByObject(T t);
+    private Class<T> clazz = (Class<T>) GenericTypeResolver.resolveTypeArgument(getClass(), BaseDAO.class);
 
-    private final Class<T> genericType;
+    @PersistenceContext
+    EntityManager entityManager;
 
-    @SuppressWarnings("unchecked")
-    protected BaseDAO() {
-        genericType = (Class<T>) GenericTypeResolver.resolveTypeArgument(getClass(), BaseDAO.class);
-    }
-
-    private Criteria getCriteria() {
-        return getSessionFactory().getCurrentSession().createCriteria(genericType);
+    public T findOne(String id) {
+        return entityManager.find(clazz, id);
     }
 
     @SuppressWarnings("unchecked")
-    public T selectOne(T o) {
-        return (T) getCriteria().add(Restrictions.allEq(createMapByObject(o))).uniqueResult();
+    public List<T> findAll() {
+        return (List<T>)entityManager.createQuery("from " + clazz.getName()).getResultList();
     }
 
-    @SuppressWarnings("unchecked")
-    public List<T> selectList(T o) {
-        return (List<T>) getCriteria().add(Restrictions.allEq(createMapByObject(o))).list();
+    public void create(T entity) {
+        entityManager.persist(entity);
     }
 
-    @SuppressWarnings("unchecked")
-    public List<T> selectList() {
-        return (List<T>) getCriteria().list();
+    public T update(T entity) {
+        return entityManager.merge(entity);
     }
 
-    public void update(T o) {
-        getSessionFactory().getCurrentSession().update(o);
+    public void delete(T entity) {
+        entityManager.remove(entity);
     }
 
-    public void persist(T o) {
-        getSessionFactory().getCurrentSession().persist(o);
-    }
-
-    public void delete(T o) {
-        getSessionFactory().getCurrentSession().delete(o);
+    public void deleteById(String entityId) {
+        delete(findOne(entityId));
     }
 }

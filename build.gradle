@@ -1,103 +1,66 @@
-// Apply the java plugin to add support for Java
+buildscript {
+    ext {
+        springBootVersion = '1.3.0.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}") 
+    }
+}
+
 apply plugin: 'java'
-apply plugin: 'war'
-apply plugin: 'eclipse-wtp'
-apply plugin: 'maven'
-apply plugin:'base'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot' 
 
-project.group = 'com.woowol'
-project.archivesBaseName = 'gutenmorgen'
-project.version = '1.0.0-BUILD-SNAPSHOT'
-
-// dependency versions
-def version = [
-spring: '4.2.3.RELEASE',
-aspectj: '1.8.7',
-slf4j: '1.7.2'
-]
-
-def tomcatDirName='/tomcat/'
-def tomcatDir='/home/webservice/apps/tomcat'
+jar {
+    baseName = 'gutenmorgen'
+    version = '0.0.1-SNAPSHOT'
+}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
-    mavenLocal()
     mavenCentral()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
 }
+
 
 dependencies {
-    compile fileTree(dir: 'libs', include: '*.jar') //lib 파일에서 로컬 jar import
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-freemarker')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-mail')
+    compile('org.springframework.boot:spring-boot-configuration-processor')
+    compile('org.projectlombok:lombok')
 
-    compile "org.springframework:spring-context:${version.spring}"
-    compile "org.springframework:spring-webmvc:${version.spring}"
-    compile "org.springframework:spring-context-support:${version.spring}"
-
-    compile "org.aspectj:aspectjrt:${version.aspectj}"
-
-    runtime "org.slf4j:jcl-over-slf4j:${version.slf4j}" //runtime
-    compile "org.slf4j:slf4j-api:${version.slf4j}"
-    compile "ch.qos.logback:logback-classic:1.1.3"
-
-    compile "javax.inject:javax.inject:1"
-
-    providedCompile "javax.servlet:javax.servlet-api:3.1.0" //provide
-
-    compile "org.freemarker:freemarker:2.3.23"
-    compile "com.fasterxml.jackson.core:jackson-databind:2.6.3"
-    compile "org.apache.httpcomponents:httpclient:4.5.1"
-    compile "javax.mail:mail:1.4.7"
+    compile('org.apache.xmlrpc:xmlrpc-client:3.1.3')
+    compile('org.apache.commons:commons-lang3:3.4')
     compile "org.jsoup:jsoup:1.7.2"
-    compile "org.springframework:spring-tx:${version.spring}"
 
-    compile "org.springframework:spring-orm:${version.spring}"
-    compile "org.hibernate:hibernate-core:4.3.6.Final"
-    compile "org.apache.commons:commons-lang3:3.4"
-    compile "commons-dbcp:commons-dbcp:1.4"
-    compile "mysql:mysql-connector-java:5.1.37"
-    compile "org.springframework:spring-jdbc:${version.spring}"
-    
-    compile "org.projectlombok:lombok:1.16.6"
-    compile "org.apache.xmlrpc:xmlrpc-client:3.1.3"
 
+    runtime('mysql:mysql-connector-java')
+
+    testCompile('org.springframework.boot:spring-boot-starter-test') 
 }
 
-final String DEFAULT_PROFILE = 'local'
-allprojects {
-    if (!project.hasProperty('profile') || !profile) {
-        ext.profile = DEFAULT_PROFILE
-    }
-    // 리소스에 각 프로필별 리소스 디렉토리 추가
-    sourceSets {
-        main {
-            resources {
-                srcDir "src/main/resources-${profile}"
-            }
-        }
+dependencyManagement {
+	imports { 
+		mavenBom "org.springframework.cloud:spring-cloud-starter-parent:Brixton.M3" 
+	}
+}
+
+
+eclipse {
+    classpath {
+         containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
+         containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
     }
 }
 
-war.doLast {
-    ant.unzip(src: war.archivePath, dest: "$buildDir/exploded")
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.7'
 }
-
-task tomcatShutdown << {
-    ("${tomcatDir}/bin/shutdown.sh").execute()
-    for (cnt in 1..5 ) {
-        def pid = "ps -ef | grep ${tomcatDirName} | grep -v grep | awk '{print \$2}'".execute().text
-        if (pid == "") {
-            break
-        }
-        println "Process Still exist"
-        if (cnt == 5) {
-            println "Send Kill Signal Tomcat process"
-            ("kill -9 " + pid).execute()
-        }
-    }
-    println "Stop Sucessfully"
-}
-
-task tomcatStartup << {
-    ("${tomcatDir}/bin/startup.sh").execute()
-}
-
-// source code encoding
-[compileJava, compileTestJava]*.options*.encoding = "UTF-8"
