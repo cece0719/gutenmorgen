@@ -1,2 +1,3 @@
 #!/bin/sh
-/home/webservice/apps/gutenmorgen/current/go.sh >/dev/null &
+cd /home/webservice/apps/gutenmorgen/current/
+./go.sh >/dev/null &
