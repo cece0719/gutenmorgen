@@ -34,13 +34,14 @@ public class BuildAndDeployController {
     @RequestMapping(value = "/go.json")
     @ResponseBody
     public synchronized Result go() throws IOException, InterruptedException, ResultException {
-        GutenmorgenApplication.ctx.close();
         environmentBO.checkNotLocal();
 
         if ("run".equals(status)) {
             new ProcessBuilder("bash", script).start();
             status = "build";
+            GutenmorgenApplication.ctx.close();
         }
+
         return new Result(ReturnCode.SUCCESS);
     }
 }
