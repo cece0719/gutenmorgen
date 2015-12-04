@@ -18,11 +18,9 @@ bootRun {
     def DEFAULT_PROFILE = 'local'
     def profile = project.hasProperty("profile") ? project.getProperty("profile") : DEFAULT_PROFILE;
     jvmArgs = [
+        '-Djava.security.egd=file:/dev/urandom',
         '-Dspring.profiles.active=' + profile
     ]
-    if (profile == 'real') {
-        jvmArgs.push('-Djava.security.egd=file:/dev/urandom')
-    }
 }
 
 jar {
