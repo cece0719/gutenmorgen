@@ -11,12 +11,18 @@ buildscript {
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
 
 bootRun {
-    jvmArgs = ['-Djava.security.egd=file:/dev/urandom']
+    def DEFAULT_PROFILE = 'local'
+    def profile = project.hasProperty("profile") ? project.getProperty("profile") : DEFAULT_PROFILE;
+    jvmArgs = [
+        '-Dspring.profiles.active=' + profile
+    ]
+    if (profile == 'real') {
+        jvmArgs.push('-Djava.security.egd=file:/dev/urandom')
+    }
 }
 
 jar {
@@ -55,14 +61,6 @@ dependencyManagement {
 	imports { 
 		mavenBom "org.springframework.cloud:spring-cloud-starter-parent:Brixton.M3" 
 	}
-}
-
-
-eclipse {
-    classpath {
-         containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
-         containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
-    }
 }
 
 task wrapper(type: Wrapper) {

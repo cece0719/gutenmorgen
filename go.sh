@@ -31,5 +31,5 @@ ls -d -1 /home/webservice/apps/gutenmorgen/** | head -n -3 | xargs rm -rf
 #/-link
 
 #tomcat startup
-/home/webservice/apps/gutenmorgen/current/gradlew bootRun
+/home/webservice/apps/gutenmorgen/current/gradlew bootRun -Pprofile=real
 #/tomcat startup
