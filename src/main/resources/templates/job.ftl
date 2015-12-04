@@ -209,6 +209,7 @@
     $job = {
         showRegisterPopup: function () {
             $('#job_register')[0].reset();
+            $('#job_register>div>div>table[processor]>tbody>tr>td>select[parameterId]').html('');
             $job.changeRegisterProcessor();
             $('#job_register').show();
         },
@@ -269,6 +270,7 @@
             $('#job_update')[0].name.value = name;
             $('#job_update')[0].processor.value = processor;
             $('#job_update')[0].parameter.value = parameter;
+            $('#job_update>div>div>table[processor]>tbody>tr>td>select[parameterId]').html('');
             $job.changeUpdateProcessor();
             $job.setUpdateInput(processor, parameter);
             $('#job_update').show();

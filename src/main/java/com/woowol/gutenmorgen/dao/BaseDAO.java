@@ -1,12 +1,16 @@
 package com.woowol.gutenmorgen.dao;
 
 import org.springframework.core.GenericTypeResolver;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @SuppressWarnings("unchecked")
+@Repository
+@Transactional
 public abstract class BaseDAO<T> {
 
     private Class<T> clazz = (Class<T>) GenericTypeResolver.resolveTypeArgument(getClass(), BaseDAO.class);
