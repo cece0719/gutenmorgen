@@ -8,10 +8,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 @SpringBootApplication
-@PropertySource({
-        "classpath:properties/application.properties",
-        "classpath:properties/application-${spring.profiles.active}.properties"
-})
 public class GutenmorgenApplication {
     public static ConfigurableApplicationContext ctx;
 
