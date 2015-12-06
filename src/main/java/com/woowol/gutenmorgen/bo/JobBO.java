@@ -16,11 +16,7 @@ public class JobBO {
         return jobDAO.findAll();
     }
 
-    public void register(Job job) {
-        jobDAO.save(job);
-    }
-
-    public void remove(String jobKey) {
+    public void delete(String jobKey) {
         jobDAO.delete(jobKey);
     }
 
@@ -29,15 +25,11 @@ public class JobBO {
         processorBO.process(job.getProcessor(), job.getParameter());
     }
 
-    public void update(Job job) {
-        Job originJob = jobDAO.findOne(job.getJobKey());
-        originJob.setName(job.getName());
-        originJob.setProcessor(job.getProcessor());
-        originJob.setParameter(job.getParameter());
-        jobDAO.save(originJob);
-    }
-
     public Job getJobByKey(String jobKey) {
         return jobDAO.findOne(jobKey);
+    }
+
+    public void save(Job job) {
+        jobDAO.save(job);
     }
 }

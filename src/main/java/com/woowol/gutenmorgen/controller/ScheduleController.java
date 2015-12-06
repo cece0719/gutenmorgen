@@ -11,10 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 @Controller
 @RequestMapping(value = "/schedule")
 public class ScheduleController {
@@ -28,9 +24,10 @@ public class ScheduleController {
         return new Result(Result.ReturnCode.SUCCESS);
     }
 
-    @RequestMapping(value = "/remove/{scheduleKey}")
-    public String remove(@PathVariable String scheduleKey) {
-        scheduleBO.remove(scheduleKey);
-        return "redirect:/";
+    @RequestMapping(value = "/delete.json")
+    @ResponseBody
+    public Result delete(Schedule schedule) {
+        scheduleBO.remove(schedule.getScheduleKey());
+        return new Result(Result.ReturnCode.SUCCESS);
     }
 }

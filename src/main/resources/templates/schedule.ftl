@@ -25,7 +25,7 @@
                 </button>
             </td>
             <td>
-                <button onclick="$schedule.remove('${schedule.scheduleKey?html}')">삭제</button>
+                <button onclick="$schedule.delete('${schedule.scheduleKey?html}')">삭제</button>
             </td>
         </tr>
             <#assign i=i+1>
@@ -75,8 +75,17 @@
 </form>
 <script type="text/javascript">
     $schedule = {
-        remove: function (scheduleKey) {
-            location.href = "/schedule/remove/" + scheduleKey;
+        delete: function (scheduleKey) {
+            $ajax.post({
+                data : {"scheduleKey" : scheduleKey},
+                url : '/schedule/delete.json',
+                success : function() {
+                    location.reload();
+                },
+                error : function(errMsg) {
+                    alert(errMsg);
+                }
+            });
         },
 
         showSavePopup: function (scheduleKey, name, jobKey, timeRegex) {

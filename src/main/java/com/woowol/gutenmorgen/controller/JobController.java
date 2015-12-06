@@ -2,10 +2,12 @@ package com.woowol.gutenmorgen.controller;
 
 import com.woowol.gutenmorgen.bo.JobBO;
 import com.woowol.gutenmorgen.model.Job;
+import com.woowol.gutenmorgen.model.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping(value = "/job")
@@ -13,22 +15,18 @@ public class JobController {
     @Autowired
     private JobBO jobBO;
 
-    @RequestMapping(value = "/register")
-    public String register(Job job) {
-        jobBO.register(job);
-        return "redirect:/";
+    @RequestMapping(value = "/save.json")
+    @ResponseBody
+    public Result save(Job job) {
+        jobBO.save(job);
+        return new Result(Result.ReturnCode.SUCCESS);
     }
 
-    @RequestMapping(value = "/update")
-    public String update(Job job) {
-        jobBO.update(job);
-        return "redirect:/";
-    }
-
-    @RequestMapping(value = "/remove/{jobKey}")
-    public String remove(@PathVariable String jobKey) {
-        jobBO.remove(jobKey);
-        return "redirect:/";
+    @RequestMapping(value = "/delete.json")
+    @ResponseBody
+    public Result delete(Job job) {
+        jobBO.delete(job.getJobKey());
+        return new Result(Result.ReturnCode.SUCCESS);
     }
 
     @RequestMapping(value = "/execute/{jobKey}")
