@@ -21,8 +21,8 @@ public class HomeController {
     @RequestMapping(value = "/")
     public String home(Model model) throws ResultException {
         model.addAttribute("processorMap", processorBO.getProcessorMap());
-        model.addAttribute("jobList", jobBO.getJobList());
-        model.addAttribute("scheduleList", scheduleBO.getScheduleList());
+        model.addAttribute("jobList", jobBO.findAll());
+        model.addAttribute("scheduleList", scheduleBO.findAll());
         return "home";
     }
 }

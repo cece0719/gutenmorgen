@@ -10,31 +10,26 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 @Service
 @Slf4j
-public class ScheduleBO {
-    @Autowired
-    private ScheduleDAO scheduleDAO;
+public class ScheduleBO extends RepositoryBO<Schedule, String, ScheduleDAO> {
     @Autowired
     private JobBO jobBO;
     @Autowired
     private ValidateBO validateBO;
 
-    private Iterable<Schedule> cashedScheduleList;
+    private List<Schedule> cashedScheduleList;
 
-    public Iterable<Schedule> getScheduleList() {
-        return scheduleDAO.findAll();
-    }
-
-    public void remove(String scheduleKey) {
-        scheduleDAO.delete(scheduleKey);
+    public List<Schedule> findAll() {
+        return super.findAll();
     }
 
     @Scheduled(fixedRate = 60*1000)
     public void updateCashedScheduleList() {
-        cashedScheduleList = scheduleDAO.findAll();
+        cashedScheduleList = super.findAll();
     }
 
     @Scheduled(fixedRate = 1000)
@@ -44,21 +39,19 @@ public class ScheduleBO {
         }
         String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss EEE", new Locale("ko", "KR")).format(new Date());
 
-        for (Schedule schedule : cashedScheduleList) {
-            if (currentTime.matches(schedule.getTimeRegex())) {
-                try {
-                    validateBO.checkNotLocal();
-                    jobBO.execute(schedule.getJob().getJobKey());
-                } catch (Exception e) {
-                    log.error("job 실행 오류", e);
-                }
+        cashedScheduleList.stream().filter(schedule -> currentTime.matches(schedule.getTimeRegex())).forEach(schedule -> {
+            try {
+                validateBO.checkNotLocal();
+                jobBO.execute(schedule.getJob().getJobKey());
+            } catch (Exception e) {
+                log.error("job 실행 오류", e);
             }
-        }
+        });
     }
 
     public void save(Schedule schedule, String jobKey) throws ResultException {
         validateBO.checkTimeRegex(schedule.getTimeRegex());
-        schedule.setJob(jobBO.getJobByKey(jobKey));
-        scheduleDAO.save(schedule);
+        schedule.setJob(jobBO.findOne(jobKey));
+        super.save(schedule);
     }
 }
