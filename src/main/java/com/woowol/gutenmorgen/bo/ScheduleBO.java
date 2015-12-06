@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 @Service
@@ -22,19 +21,19 @@ public class ScheduleBO {
     @Autowired
     private EnvironmentBO environmentBO;
 
-    private List<Schedule> cashedScheduleList;
+    private Iterable<Schedule> cashedScheduleList;
 
-    public List<Schedule> getScheduleList() {
+    public Iterable<Schedule> getScheduleList() {
         return scheduleDAO.findAll();
     }
 
     public void register(Schedule schedule, String jobKey) {
         schedule.setJob(jobBO.getJobByKey(jobKey));
-        scheduleDAO.create(schedule);
+        scheduleDAO.save(schedule);
     }
 
     public void remove(String scheduleKey) {
-        scheduleDAO.deleteById(scheduleKey);
+        scheduleDAO.delete(scheduleKey);
     }
 
     public void update(Schedule schedule, String jobKey) {
@@ -42,7 +41,7 @@ public class ScheduleBO {
         originSchedule.setName(schedule.getName());
         originSchedule.setJob(jobBO.getJobByKey(jobKey));
         originSchedule.setTimeRegex(schedule.getTimeRegex());
-        scheduleDAO.update(originSchedule);
+        scheduleDAO.save(originSchedule);
     }
 
     @Scheduled(fixedRate = 60*1000)
@@ -57,13 +56,15 @@ public class ScheduleBO {
         }
         String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss EEE", new Locale("ko", "KR")).format(new Date());
 
-        cashedScheduleList.stream().filter(schedule -> currentTime.matches(schedule.getTimeRegex())).forEach(schedule -> {
-            try {
-                environmentBO.checkNotLocal();
-                jobBO.execute(schedule.getJob().getJobKey());
-            } catch (Exception e) {
-                log.error("job 실행 오류", e);
+        for (Schedule schedule : cashedScheduleList) {
+            if (currentTime.matches(schedule.getTimeRegex())) {
+                try {
+                    environmentBO.checkNotLocal();
+                    jobBO.execute(schedule.getJob().getJobKey());
+                } catch (Exception e) {
+                    log.error("job 실행 오류", e);
+                }
             }
-        });
+        }
     }
 }

@@ -1,8 +1,7 @@
 package com.woowol.gutenmorgen.dao;
 
 import com.woowol.gutenmorgen.model.Schedule;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
-public class ScheduleDAO extends BaseDAO<Schedule> {
+public interface ScheduleDAO extends JpaRepository<Schedule, String> {
 }

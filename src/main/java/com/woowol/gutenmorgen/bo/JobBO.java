@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.woowol.gutenmorgen.dao.JobDAO;
 
-import java.util.List;
-
 @Service
 public class JobBO {
     @Autowired
@@ -14,17 +12,16 @@ public class JobBO {
     @Autowired
     private ProcessorBO processorBO;
 
-    public List<Job> getJobList() {
+    public Iterable<Job> getJobList() {
         return jobDAO.findAll();
     }
 
     public void register(Job job) {
-        jobDAO.create(job);
+        jobDAO.save(job);
     }
 
     public void remove(String jobKey) {
-        Job job = jobDAO.findOne(jobKey);
-        jobDAO.delete(job);
+        jobDAO.delete(jobKey);
     }
 
     public void execute(String jobKey) throws Exception {
@@ -37,7 +34,7 @@ public class JobBO {
         originJob.setName(job.getName());
         originJob.setProcessor(job.getProcessor());
         originJob.setParameter(job.getParameter());
-        jobDAO.update(originJob);
+        jobDAO.save(originJob);
     }
 
     public Job getJobByKey(String jobKey) {
