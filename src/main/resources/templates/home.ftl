@@ -1,7 +1,7 @@
 <#include "common/common.ftl">
 <@layout.default>
     <div id="header">
-        Guten Morgen_
+        Guten Morgen
     </div>
     <#include "/buildAndDeploy.ftl">
     <#include "/job.ftl">
