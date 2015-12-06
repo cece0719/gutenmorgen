@@ -1,6 +1,7 @@
 package com.woowol.gutenmorgen.bo;
 
 import com.woowol.gutenmorgen.dao.ScheduleDAO;
+import com.woowol.gutenmorgen.exception.ResultException;
 import com.woowol.gutenmorgen.model.Schedule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class ScheduleBO {
     @Autowired
     private JobBO jobBO;
     @Autowired
-    private EnvironmentBO environmentBO;
+    private ValidateBO validateBO;
 
     private Iterable<Schedule> cashedScheduleList;
 
@@ -27,21 +28,8 @@ public class ScheduleBO {
         return scheduleDAO.findAll();
     }
 
-    public void register(Schedule schedule, String jobKey) {
-        schedule.setJob(jobBO.getJobByKey(jobKey));
-        scheduleDAO.save(schedule);
-    }
-
     public void remove(String scheduleKey) {
         scheduleDAO.delete(scheduleKey);
-    }
-
-    public void update(Schedule schedule, String jobKey) {
-        Schedule originSchedule = scheduleDAO.findOne(schedule.getScheduleKey());
-        originSchedule.setName(schedule.getName());
-        originSchedule.setJob(jobBO.getJobByKey(jobKey));
-        originSchedule.setTimeRegex(schedule.getTimeRegex());
-        scheduleDAO.save(originSchedule);
     }
 
     @Scheduled(fixedRate = 60*1000)
@@ -59,12 +47,18 @@ public class ScheduleBO {
         for (Schedule schedule : cashedScheduleList) {
             if (currentTime.matches(schedule.getTimeRegex())) {
                 try {
-                    environmentBO.checkNotLocal();
+                    validateBO.checkNotLocal();
                     jobBO.execute(schedule.getJob().getJobKey());
                 } catch (Exception e) {
                     log.error("job 실행 오류", e);
                 }
             }
         }
+    }
+
+    public void save(Schedule schedule, String jobKey) throws ResultException {
+        validateBO.checkTimeRegex(schedule.getTimeRegex());
+        schedule.setJob(jobBO.getJobByKey(jobKey));
+        scheduleDAO.save(schedule);
     }
 }

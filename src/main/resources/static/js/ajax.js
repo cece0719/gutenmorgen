@@ -14,6 +14,9 @@ $ajax = {
 				originError("알수없는 오류 code:["+request.status+"]"+"message:["+request.responseText+"]error:["+error+"]");
 			}
 		};
+		if (typeof param.cache !== 'boolean') {
+			param.cache=false;
+		}
 		return $.ajax(param);
 	}
 }

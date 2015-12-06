@@ -1,7 +1,6 @@
 package com.woowol.gutenmorgen.controller;
 
-import com.woowol.gutenmorgen.GutenmorgenApplication;
-import com.woowol.gutenmorgen.bo.EnvironmentBO;
+import com.woowol.gutenmorgen.bo.ValidateBO;
 import com.woowol.gutenmorgen.exception.ResultException;
 import com.woowol.gutenmorgen.model.Result;
 import com.woowol.gutenmorgen.model.Result.ReturnCode;
@@ -19,7 +18,7 @@ import java.io.IOException;
 @RequestMapping(value = "/buildAndDeploy")
 public class BuildAndDeployController {
     @Autowired
-    private EnvironmentBO environmentBO;
+    private ValidateBO validateBO;
     @Value("${buildAndDeploy.script}")
     private String script;
 
@@ -34,7 +33,7 @@ public class BuildAndDeployController {
     @RequestMapping(value = "/go.json")
     @ResponseBody
     public synchronized Result go() throws IOException, InterruptedException, ResultException {
-        environmentBO.checkNotLocal();
+        validateBO.checkNotLocal();
 
         if ("run".equals(status)) {
             new ProcessBuilder("bash", script).start();

@@ -27,7 +27,9 @@ public class Result {
     public enum ReturnCode {
         SUCCESS("0", "SUCCESS"),
         UNKNOWN_ERROR("9999", "알수없는 오류"),
-        ENVIRONMENT_ERROR("1", "현재 환경에선 지원되지 않습니다.");
+        ENVIRONMENT_ERROR("1", "현재 환경에선 지원되지 않습니다."),
+        TIMEREGEX_ERROR("2", "잘못된 시간 정규표현식 입니다.")
+        ;
 
         @Getter
         private final String rtnCode;
