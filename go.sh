@@ -3,7 +3,7 @@
 NOW_TIME=`date +%Y%m%d%H%M%S`
 
 #gitclone
-git clone https://github.com/cece0719/gutenmorgen.git /home/webservice/apps/gutenmorgen/$NOW_TIME
+git clone https://github.com/cece0719/gutenmorgen.git /home/webservice/apps/gutenmorgen/clone_$NOW_TIME
 #/gitclone
 
 #tomcat shutdown
@@ -25,9 +25,9 @@ echo "Stop Sucessfully"
 
 #link
 rm /home/webservice/apps/gutenmorgen/current
-ln -s /home/webservice/apps/gutenmorgen/$NOW_TIME /home/webservice/apps/gutenmorgen/current
+ln -s /home/webservice/apps/gutenmorgen/clone_$NOW_TIME /home/webservice/apps/gutenmorgen/current
 
-ls -d -1 /home/webservice/apps/gutenmorgen/** | head -n -3 | xargs rm -rf
+ls -d -1 /home/webservice/apps/gutenmorgen/** | grep 'clone_' | head -n -3 | xargs rm -rf
 #/-link
 
 #tomcat startup
