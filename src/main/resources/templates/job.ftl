@@ -139,7 +139,7 @@
         execute: function (jobKey) {
             $.ajax({
                 data : {"jobKey" : jobKey},
-                url : '/job/execute',
+                url : '/job/execute.json',
                 success : function() {
                     location.reload();
                 },
