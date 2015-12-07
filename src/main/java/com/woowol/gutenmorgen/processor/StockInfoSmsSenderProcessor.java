@@ -35,7 +35,7 @@ public class StockInfoSmsSenderProcessor extends Processor<Parameters> {
 
     @Data
     public static class Parameters {
-        @TextParameter(name = "종목 번호")
+        @TextParameter(name = "종목 이름")
         private List<String> stockList;
         @TextParameter(name = "수신인(휴대폰 번호)")
         private List<String> mobileList;
