@@ -36,7 +36,7 @@ public class BuildAndDeployController {
             new ProcessBuilder("bash", script).start();
             status = "build";
         }
-
+        
         return new Result(ReturnCode.SUCCESS);
     }
 }

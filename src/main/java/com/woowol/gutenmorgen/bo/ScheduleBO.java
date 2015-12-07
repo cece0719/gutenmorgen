@@ -22,13 +22,9 @@ public class ScheduleBO extends RepositoryBO<Schedule, String, ScheduleDAO> {
 
     private List<Schedule> cashedScheduleList;
 
-    public List<Schedule> findAll() {
-        return super.findAll();
-    }
-
     @Scheduled(fixedRate = 60*1000)
     public void updateCashedScheduleList() {
-        cashedScheduleList = super.findAll();
+        cashedScheduleList = findAll();
     }
 
     @Scheduled(fixedRate = 1000)
