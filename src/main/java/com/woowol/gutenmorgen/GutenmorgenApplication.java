@@ -5,10 +5,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.SchedulingConfigurer;
+import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
 @SpringBootApplication
-public class GutenmorgenApplication {
+@EnableScheduling
+public class GutenmorgenApplication implements SchedulingConfigurer{
     public static ConfigurableApplicationContext ctx;
 
     public static void main(String[] args) {
@@ -18,5 +25,15 @@ public class GutenmorgenApplication {
     @Bean
     public MappingJackson2JsonView jsonView() {
         return new MappingJackson2JsonView();
+    }
+
+    @Override
+    public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
+        taskRegistrar.setScheduler(taskExecutor());
+    }
+
+    @Bean(destroyMethod="shutdown")
+    public Executor taskExecutor() {
+        return Executors.newScheduledThreadPool(10);
     }
 }

@@ -1,11 +1,10 @@
 package com.woowol.gutenmorgen.controller;
 
-import com.woowol.gutenmorgen.bo.ValidateBO;
+import com.woowol.gutenmorgen.util.Validate;
 import com.woowol.gutenmorgen.exception.ResultException;
 import com.woowol.gutenmorgen.model.Result;
 import com.woowol.gutenmorgen.model.Result.ReturnCode;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +16,6 @@ import java.io.IOException;
 @Controller
 @RequestMapping(value = "/buildAndDeploy")
 public class BuildAndDeployController {
-    @Autowired
-    private ValidateBO validateBO;
     @Value("${buildAndDeploy.script}")
     private String script;
 
@@ -33,7 +30,7 @@ public class BuildAndDeployController {
     @RequestMapping(value = "/go.json")
     @ResponseBody
     public synchronized Result go() throws IOException, InterruptedException, ResultException {
-        validateBO.checkNotLocal();
+        Validate.checkNotLocal();
 
         if ("run".equals(status)) {
             new ProcessBuilder("bash", script).start();

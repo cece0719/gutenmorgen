@@ -3,6 +3,7 @@ package com.woowol.gutenmorgen.bo;
 import com.woowol.gutenmorgen.dao.ScheduleDAO;
 import com.woowol.gutenmorgen.exception.ResultException;
 import com.woowol.gutenmorgen.model.Schedule;
+import com.woowol.gutenmorgen.util.Validate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,8 +19,6 @@ import java.util.Locale;
 public class ScheduleBO extends RepositoryBO<Schedule, String, ScheduleDAO> {
     @Autowired
     private JobBO jobBO;
-    @Autowired
-    private ValidateBO validateBO;
 
     private List<Schedule> cashedScheduleList;
 
@@ -41,7 +40,7 @@ public class ScheduleBO extends RepositoryBO<Schedule, String, ScheduleDAO> {
 
         cashedScheduleList.stream().filter(schedule -> currentTime.matches(schedule.getTimeRegex())).forEach(schedule -> {
             try {
-                validateBO.checkNotLocal();
+                Validate.checkNotLocal();
                 jobBO.execute(schedule.getJob().getJobKey());
             } catch (Exception e) {
                 log.error("job 실행 오류", e);
@@ -50,7 +49,7 @@ public class ScheduleBO extends RepositoryBO<Schedule, String, ScheduleDAO> {
     }
 
     public void save(Schedule schedule, String jobKey) throws ResultException {
-        validateBO.checkTimeRegex(schedule.getTimeRegex());
+        Validate.checkTimeRegex(schedule.getTimeRegex());
         schedule.setJob(jobBO.findOne(jobKey));
         super.save(schedule);
     }

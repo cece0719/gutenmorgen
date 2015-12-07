@@ -1,23 +1,25 @@
-package com.woowol.gutenmorgen.bo;
+package com.woowol.gutenmorgen.util;
 
 import com.woowol.gutenmorgen.exception.ResultException;
 import com.woowol.gutenmorgen.model.Result;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-@Slf4j
-@Service
-public class ValidateBO {
-    @Autowired
-    Environment env;
+@Component
+public class Validate {
+    private static Environment env;
 
-    public void checkNotLocal() throws ResultException {
+    @Autowired
+    public Validate(Environment env) {
+        Validate.env = env;
+    }
+
+    public static void checkNotLocal() throws ResultException {
         for (String profile : env.getActiveProfiles()) {
             if("local".equals(profile)) {
                 throw new ResultException(Result.ReturnCode.ENVIRONMENT_ERROR);
@@ -25,7 +27,7 @@ public class ValidateBO {
         }
     }
 
-    public void checkTimeRegex(String timeRegex) throws ResultException {
+    public static void checkTimeRegex(String timeRegex) throws ResultException {
         try {
             (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss EEE", new Locale("ko", "KR")).format(new Date())).matches(timeRegex);
         } catch(Exception e) {
