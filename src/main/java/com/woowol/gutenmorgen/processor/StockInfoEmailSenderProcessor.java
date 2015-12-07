@@ -33,7 +33,7 @@ public class StockInfoEmailSenderProcessor extends Processor<Parameters> {
 
     @Data
     public static class Parameters {
-        @TextParameter(name = "종목 번호")
+        @TextParameter(name = "종목 이름")
         private List<String> stockList;
         @TextParameter(name = "수신인(메일 주소)")
         private List<String> emailList;
