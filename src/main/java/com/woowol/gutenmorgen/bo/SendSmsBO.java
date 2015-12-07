@@ -2,6 +2,7 @@ package com.woowol.gutenmorgen.bo;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.tomcat.util.codec.binary.StringUtils;
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
 import org.springframework.beans.factory.annotation.Value;
@@ -120,9 +121,8 @@ public class SendSmsBO {
 //    }
 
     public void sendSms(String mobile, String message) throws Exception {
-        byte[] b = message.getBytes();
-        log.info(message);
-        message = new String(b, 0, Math.min(90, b.length));
+        byte[] b = message.getBytes("EUC-KR");
+        message = new String(b, 0, Math.min(90, b.length), "EUC-KR");
 
         String sendType = "sms";                                // 발송 타입 sms or lms
         String refKey = String.valueOf(System.currentTimeMillis());// 결과 확인을 위한 KEY ( 중복되지 않도록 생성하여 전달해 주시기 바랍니다. )
@@ -133,7 +133,6 @@ public class SendSmsBO {
         message = StringEscapeUtils.escapeXml11(message);
 
         mobile = mobile.replace("-", "").replace(" ", "");
-
         String sb = "<request>" +
                 "<sms-id>" + smsId + "</sms-id>" +
                 "<access-token>" + getMd5AccessToken() + "</access-token>" +
