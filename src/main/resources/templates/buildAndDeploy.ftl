@@ -5,13 +5,13 @@
 <script type="text/javascript">
 	$build={
 		execute : function() {
-			$ajax.post({
+			$.ajax({
 				url : '/buildAndDeploy/go.json',
 				success : function(data) {
 					$('#bad_loading').show();
 					var deploy = false;
 					var statusCheck = function() {
-						$ajax.post({
+						$.ajax({
 							url : '/buildAndDeploy/status.json',
 							timeout : 1000,
 							success : function(data) {

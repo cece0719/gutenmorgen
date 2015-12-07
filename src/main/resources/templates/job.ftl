@@ -125,7 +125,7 @@
 <script type="text/javascript">
     $job = {
         delete: function (jobKey) {
-            $ajax.post({
+            $.ajax({
                 data : {"jobKey" : jobKey},
                 url : '/job/delete.json',
                 success : function() {
@@ -159,7 +159,7 @@
                 return;
             }
             $job.setSaveParameter($('#job_save')[0].processor.value);
-            $ajax.post({
+            $.ajax({
                 data : $('#job_save').serialize(),
                 url : '/job/save.json',
                 success : function() {

@@ -76,7 +76,7 @@
 <script type="text/javascript">
     $schedule = {
         delete: function (scheduleKey) {
-            $ajax.post({
+            $.ajax({
                 data : {"scheduleKey" : scheduleKey},
                 url : '/schedule/delete.json',
                 success : function() {
@@ -107,7 +107,7 @@
                 alert('시간 정규표현식을 입력하세요');
                 return;
             }
-            $ajax.post({
+            $.ajax({
                 data : $('#schedule_save').serialize(),
                 url : '/schedule/save.json',
                 success : function() {
