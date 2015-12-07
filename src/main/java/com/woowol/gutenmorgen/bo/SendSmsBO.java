@@ -121,7 +121,8 @@ public class SendSmsBO {
 
     public void sendSms(String mobile, String message) throws Exception {
         byte[] b = message.getBytes();
-        message = new String(b, 0, Math.min(80, b.length - 1));
+        log.info(message);
+        message = new String(b, 0, Math.min(80, b.length));
 
         String sendType = "sms";                                // 발송 타입 sms or lms
         String refKey = String.valueOf(System.currentTimeMillis());// 결과 확인을 위한 KEY ( 중복되지 않도록 생성하여 전달해 주시기 바랍니다. )
