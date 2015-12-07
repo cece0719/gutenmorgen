@@ -19,7 +19,7 @@ public class HomeController {
     @Autowired
     private ScheduleBO scheduleBO;
 
-    @RequestMapping(value = "/")
+    @RequestMapping("/")
     public String home(Model model) throws IOException {
         model.addAttribute("processorMap", processorBO.getProcessorMap());
         model.addAttribute("jobList", jobBO.findAll());

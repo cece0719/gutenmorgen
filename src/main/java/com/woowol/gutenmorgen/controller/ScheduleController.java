@@ -10,19 +10,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping(value = "/schedule")
+@RequestMapping("/schedule")
 public class ScheduleController {
     @Autowired
     private ScheduleBO scheduleBO;
 
-    @RequestMapping(value = "/save.json")
+    @RequestMapping("/save.json")
     @ResponseBody
     public Result save(Schedule schedule, @RequestParam("jobKey") String jobKey) {
         scheduleBO.save(schedule, jobKey);
         return new Result(Result.ReturnCode.SUCCESS);
     }
 
-    @RequestMapping(value = "/delete.json")
+    @RequestMapping("/delete.json")
     @ResponseBody
     public Result delete(Schedule schedule) {
         scheduleBO.delete(schedule.getScheduleKey());

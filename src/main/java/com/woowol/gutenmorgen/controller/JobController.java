@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping(value = "/job")
+@RequestMapping("/job")
 public class JobController {
     @Autowired
     private JobBO jobBO;
@@ -22,7 +22,7 @@ public class JobController {
         return new Result(Result.ReturnCode.SUCCESS);
     }
 
-    @RequestMapping(value = "/delete.json")
+    @RequestMapping("/delete.json")
     @ResponseBody
     public Result delete(Job job) {
         jobBO.delete(job.getJobKey());
