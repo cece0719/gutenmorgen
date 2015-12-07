@@ -1,6 +1,7 @@
 package com.woowol.gutenmorgen.bo;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
 import org.springframework.beans.factory.annotation.Value;
@@ -127,8 +128,8 @@ public class SendSmsBO {
         String subject = "_TITLE_";                            //  LMS 발송시 제목으로 사용 SMS 발송시는 수신자에게 내용이 보이지 않음.
         String reserve = "0";                                    //예약 일자 "2013-07-30 12:00:00" 또는 "0" 0또는 빈값(null)은 즉시 발송
 
-        subject = "<![CDATA[" + subject + "]]>";
-        message = "<![CDATA[" + message + "]]>";
+        subject = StringEscapeUtils.escapeXml11(subject);
+        message = StringEscapeUtils.escapeXml11(message);
 
         mobile = mobile.replace("-", "").replace(" ", "");
 
