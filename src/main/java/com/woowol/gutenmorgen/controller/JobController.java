@@ -28,7 +28,7 @@ public class JobController {
         return new Result(Result.ReturnCode.SUCCESS);
     }
 
-    @RequestMapping(value = "/execute.json}")
+    @RequestMapping(value = "/execute.json")
     @ResponseBody
     public Result execute(Job job) throws Exception {
         jobBO.execute(job.getJobKey());
