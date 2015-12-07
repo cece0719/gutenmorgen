@@ -1,7 +1,6 @@
 package com.woowol.gutenmorgen.bo;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,18 +50,18 @@ public class SendSmsBO {
 //            + "</params>"
 //            + "</request>";
 
-    private final static String reqXmlFormat = "<request>"
-            + "<sms-id>%s</sms-id>"
-            + "<access-token>%s</access-token>"
-            + "<response-format>xml</response-format>"
-            + "<method>SMS.send</method>"
-            + "<params>"
-            + "<send_type>%s</send_type>" + "<ref_key>%s</ref_key>"
-            + "<subject>%s</subject>" + "<message>%s</message>"
-            + "<callback>%s</callback>" + "<phone>%s</phone>"
-            + "<reserve>%s</reserve>"
-            + "</params>"
-            + "</request>";// 발신 번호
+//    private final static String reqXmlFormat = "<request>"
+//            + "<sms-id>%s</sms-id>"
+//            + "<access-token>%s</access-token>"
+//            + "<response-format>xml</response-format>"
+//            + "<method>SMS.send</method>"
+//            + "<params>"
+//            + "<send_type>%s</send_type>" + "<ref_key>%s</ref_key>"
+//            + "<subject>%s</subject>" + "<message>%s</message>"
+//            + "<callback>%s</callback>" + "<phone>%s</phone>"
+//            + "<reserve>%s</reserve>"
+//            + "</params>"
+//            + "</request>";
 
 //    private final static String reqXmlFormat2 = "<request>"
 //            + "<sms-id>%s</sms-id>"
@@ -128,12 +127,27 @@ public class SendSmsBO {
         String subject = "_TITLE_";                            //  LMS 발송시 제목으로 사용 SMS 발송시는 수신자에게 내용이 보이지 않음.
         String reserve = "0";                                    //예약 일자 "2013-07-30 12:00:00" 또는 "0" 0또는 빈값(null)은 즉시 발송
 
-        subject = StringEscapeUtils.escapeXml11(subject);
-        message = StringEscapeUtils.escapeXml11(message);
+        subject = "<![CDATA[" + subject + "]]>";
+        message = "<![CDATA[" + message + "]]>";
 
         mobile = mobile.replace("-", "").replace(" ", "");
 
-        callMethod(String.format(reqXmlFormat, smsId, getMd5AccessToken(), sendType, refKey, subject, message, callback, mobile, reserve));
+        String sb = "<request>" +
+                "<sms-id>" + smsId + "</sms-id>" +
+                "<access-token>" + getMd5AccessToken() + "</access-token>" +
+                "<response-format>xml</response-format>" +
+                "<method>SMS.send</method>" +
+                "<params>" +
+                "<send_type>" + sendType + "</send_type>" +
+                "<ref_key>" + refKey + "</ref_key>" +
+                "<subject>" + subject + "</subject>" +
+                "<message>" + message + "</message>" +
+                "<callback>" + callback + "</callback>" +
+                "<phone>" + mobile + "</phone>" +
+                "<reserve>" + reserve + "</reserve>" +
+                "</params>" +
+                "</request>";
+        callMethod(sb);
     }
 
     private void callMethod(String s) throws Exception {
