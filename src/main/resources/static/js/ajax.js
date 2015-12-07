@@ -23,4 +23,4 @@
         };
         return originalAjax(param);
     }
-})();
+}());
