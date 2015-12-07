@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.io.Serializable;
 import java.util.List;
 
-public abstract class RepositoryBO<T, ID extends Serializable, REPOSITORY extends JpaRepository<T,ID>> implements JpaRepository<T, ID> {
+public abstract class AbstractRepositoryBO<REPOSITORY extends JpaRepository<T, ID>, T, ID extends Serializable> implements JpaRepository<T, ID> {
     @Autowired
     private REPOSITORY jpaRepository;
 

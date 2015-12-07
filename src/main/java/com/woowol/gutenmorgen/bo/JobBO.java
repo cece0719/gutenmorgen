@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class JobBO extends RepositoryBO<Job, String, JobDAO> {
+public class JobBO extends AbstractRepositoryBO<JobDAO, Job, String> {
     @Autowired
     private ProcessorBO processorBO;
 

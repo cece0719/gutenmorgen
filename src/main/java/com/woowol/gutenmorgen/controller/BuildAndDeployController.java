@@ -1,9 +1,9 @@
 package com.woowol.gutenmorgen.controller;
 
-import com.woowol.gutenmorgen.util.Validate;
 import com.woowol.gutenmorgen.exception.ResultException;
 import com.woowol.gutenmorgen.model.Result;
 import com.woowol.gutenmorgen.model.Result.ReturnCode;
+import com.woowol.gutenmorgen.util.Validate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -36,7 +36,7 @@ public class BuildAndDeployController {
             new ProcessBuilder("bash", script).start();
             status = "build";
         }
-        
+
         return new Result(ReturnCode.SUCCESS);
     }
 }

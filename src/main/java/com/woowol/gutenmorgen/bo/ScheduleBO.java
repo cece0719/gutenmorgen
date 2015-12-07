@@ -16,7 +16,7 @@ import java.util.Locale;
 
 @Service
 @Slf4j
-public class ScheduleBO extends RepositoryBO<Schedule, String, ScheduleDAO> {
+public class ScheduleBO extends AbstractRepositoryBO<ScheduleDAO, Schedule, String> {
     @Autowired
     private JobBO jobBO;
 
@@ -48,5 +48,6 @@ public class ScheduleBO extends RepositoryBO<Schedule, String, ScheduleDAO> {
         Validate.checkTimeRegex(schedule.getTimeRegex());
         schedule.setJob(jobBO.findOne(jobKey));
         super.save(schedule);
+        updateCashedScheduleList();
     }
 }
