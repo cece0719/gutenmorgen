@@ -9,6 +9,7 @@ git clone https://github.com/cece0719/gutenmorgen.git /home/webservice/apps/gute
 #tomcat shutdown
 PID=`ps -ef | grep "\/apps\/gutenmorgen\/" | grep -v grep | awk '{print $2}'`
 CNT=1
+curl -X POST http://127.0.0.1:8081/shutdown
 while [ "x$PID" != "x" ] ; do
         echo "Process Still exist. $PID"
         if [ $CNT -ge "5" ] ; then
