@@ -1,6 +1,5 @@
 package com.woowol.gutenmorgen.controller;
 
-import com.woowol.gutenmorgen.exception.ResultException;
 import com.woowol.gutenmorgen.model.Result;
 import com.woowol.gutenmorgen.model.Result.ReturnCode;
 import com.woowol.gutenmorgen.util.Validate;
@@ -29,7 +28,7 @@ public class BuildAndDeployController {
 
     @RequestMapping(value = "/go.json")
     @ResponseBody
-    public synchronized Result go() throws IOException, InterruptedException, ResultException {
+    public synchronized Result go() throws IOException, InterruptedException {
         Validate.checkNotLocal();
 
         if ("run".equals(status)) {

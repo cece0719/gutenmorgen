@@ -1,7 +1,6 @@
 package com.woowol.gutenmorgen.bo;
 
 import com.woowol.gutenmorgen.dao.ScheduleDAO;
-import com.woowol.gutenmorgen.exception.ResultException;
 import com.woowol.gutenmorgen.model.Schedule;
 import com.woowol.gutenmorgen.util.Validate;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +21,7 @@ public class ScheduleBO extends AbstractRepositoryBO<ScheduleDAO, Schedule, Stri
 
     private List<Schedule> cashedScheduleList;
 
-    @Scheduled(fixedRate = 60*1000)
+    @Scheduled(fixedRate = 60 * 1000)
     public void updateCashedScheduleList() {
         cashedScheduleList = findAll();
     }
@@ -44,10 +43,10 @@ public class ScheduleBO extends AbstractRepositoryBO<ScheduleDAO, Schedule, Stri
         });
     }
 
-    public void save(Schedule schedule, String jobKey) throws ResultException {
+    public void save(Schedule schedule, String jobKey) {
         Validate.checkTimeRegex(schedule.getTimeRegex());
         schedule.setJob(jobBO.findOne(jobKey));
-        super.save(schedule);
+        save(schedule);
         updateCashedScheduleList();
     }
 }

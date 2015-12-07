@@ -1,7 +1,6 @@
 package com.woowol.gutenmorgen.controller;
 
 import com.woowol.gutenmorgen.bo.ScheduleBO;
-import com.woowol.gutenmorgen.exception.ResultException;
 import com.woowol.gutenmorgen.model.Result;
 import com.woowol.gutenmorgen.model.Schedule;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ public class ScheduleController {
 
     @RequestMapping(value = "/save.json")
     @ResponseBody
-    public Result save(Schedule schedule, @RequestParam("jobKey") String jobKey) throws ResultException {
+    public Result save(Schedule schedule, @RequestParam("jobKey") String jobKey) {
         scheduleBO.save(schedule, jobKey);
         return new Result(Result.ReturnCode.SUCCESS);
     }

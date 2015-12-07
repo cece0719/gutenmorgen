@@ -2,7 +2,8 @@ package com.woowol.gutenmorgen.processor;
 
 import com.woowol.gutenmorgen.bo.SendSmsBO;
 import com.woowol.gutenmorgen.bo.StockInfoBO;
-import com.woowol.gutenmorgen.processor.StockInfoSmsSenderProcessor.Parameters;
+import com.woowol.gutenmorgen.processor.StockInfoSmsSenderProcessor.Parameter;
+import com.woowol.gutenmorgen.util.Validate;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class StockInfoSmsSenderProcessor extends Processor<Parameters> {
+public class StockInfoSmsSenderProcessor extends Processor<Parameter> {
     @Autowired
     private SendSmsBO sendSmsBO;
     @Autowired
@@ -24,7 +25,15 @@ public class StockInfoSmsSenderProcessor extends Processor<Parameters> {
     }
 
     @Override
-    public void process(Parameters parameter) throws Exception {
+    public void validateParameter(Parameter parameter) {
+        Validate.checkNotEmpty(parameter.getStockList(), "종목명");
+        Validate.checkNotEmpty(parameter.getMobileList(), "수신인");
+        Validate.checkStockName(parameter.getStockList());
+        Validate.checkMobileNo(parameter.getMobileList());
+    }
+
+    @Override
+    public void process(Parameter parameter) throws Exception {
         for (String stock : parameter.getStockList()) {
             for (String mobile : parameter.getMobileList()) {
                 String stockInfoText = stockInfoBO.getSimpleStockInfoText(stock);
@@ -34,7 +43,7 @@ public class StockInfoSmsSenderProcessor extends Processor<Parameters> {
     }
 
     @Data
-    public static class Parameters {
+    public static class Parameter {
         @TextParameter(name = "종목 이름")
         private List<String> stockList;
         @TextParameter(name = "수신인(휴대폰 번호)")

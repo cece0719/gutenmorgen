@@ -13,28 +13,28 @@ import java.util.Properties;
 
 @Service
 public class SendMailBO {
-	@Value("${sendmail.gmail.id}")
-	private String gmailId;
-	@Value("${sendmail.gmail.password}")
-	private String gmailPassword;
-	
-	public void sendMail(String email, String subject, String content) throws MessagingException {
-		Properties mailServerProperties = System.getProperties();
-		mailServerProperties.put("mail.smtp.port", "587");
-		mailServerProperties.put("mail.smtp.auth", "true");
-		mailServerProperties.put("mail.smtp.starttls.enable", "true");
+    @Value("${sendmail.gmail.id}")
+    private String gmailId;
+    @Value("${sendmail.gmail.password}")
+    private String gmailPassword;
 
-		Session getMailSession = Session.getDefaultInstance(mailServerProperties, null);
-		MimeMessage generateMailMessage = new MimeMessage(getMailSession);
-		generateMailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
-		generateMailMessage.setSubject(subject);
-		generateMailMessage.setContent(content, "text/html");
+    public void sendMail(String email, String subject, String content) throws MessagingException {
+        Properties mailServerProperties = System.getProperties();
+        mailServerProperties.put("mail.smtp.port", "587");
+        mailServerProperties.put("mail.smtp.auth", "true");
+        mailServerProperties.put("mail.smtp.starttls.enable", "true");
 
-		System.out.println("Get Session and Send mail");
-		Transport transport = getMailSession.getTransport("smtp");
+        Session getMailSession = Session.getDefaultInstance(mailServerProperties, null);
+        MimeMessage generateMailMessage = new MimeMessage(getMailSession);
+        generateMailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+        generateMailMessage.setSubject(subject);
+        generateMailMessage.setContent(content, "text/html");
 
-		transport.connect("smtp.gmail.com", gmailId, gmailPassword);
-		transport.sendMessage(generateMailMessage, generateMailMessage.getAllRecipients());
-		transport.close();
-	}
+        System.out.println("Get Session and Send mail");
+        Transport transport = getMailSession.getTransport("smtp");
+
+        transport.connect("smtp.gmail.com", gmailId, gmailPassword);
+        transport.sendMessage(generateMailMessage, generateMailMessage.getAllRecipients());
+        transport.close();
+    }
 }

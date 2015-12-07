@@ -119,19 +119,21 @@ public class SendSmsBO {
 //        }
 //    }
 
-    public void sendSms(String phone, String message) throws Exception {
+    public void sendSms(String mobile, String message) throws Exception {
         byte[] b = message.getBytes();
-        message = new String(b, 0, Math.min(80, b.length-1));
+        message = new String(b, 0, Math.min(80, b.length - 1));
 
-        String sendType = "sms";								// 발송 타입 sms or lms
+        String sendType = "sms";                                // 발송 타입 sms or lms
         String refKey = String.valueOf(System.currentTimeMillis());// 결과 확인을 위한 KEY ( 중복되지 않도록 생성하여 전달해 주시기 바랍니다. )
-        String subject = "_TITLE_";							//  LMS 발송시 제목으로 사용 SMS 발송시는 수신자에게 내용이 보이지 않음.
-        String reserve = "0";									//예약 일자 "2013-07-30 12:00:00" 또는 "0" 0또는 빈값(null)은 즉시 발송
+        String subject = "_TITLE_";                            //  LMS 발송시 제목으로 사용 SMS 발송시는 수신자에게 내용이 보이지 않음.
+        String reserve = "0";                                    //예약 일자 "2013-07-30 12:00:00" 또는 "0" 0또는 빈값(null)은 즉시 발송
 
         subject = StringEscapeUtils.escapeXml11(subject);
         message = StringEscapeUtils.escapeXml11(message);
 
-        callMethod(String.format(reqXmlFormat, smsId, getMd5AccessToken(), sendType, refKey, subject, message, callback, phone, reserve));
+        mobile = mobile.replace("-", "").replace(" ", "");
+
+        callMethod(String.format(reqXmlFormat, smsId, getMd5AccessToken(), sendType, refKey, subject, message, callback, mobile, reserve));
     }
 
     private void callMethod(String s) throws Exception {

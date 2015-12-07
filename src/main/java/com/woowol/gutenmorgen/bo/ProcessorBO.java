@@ -1,7 +1,6 @@
 package com.woowol.gutenmorgen.bo;
 
 import com.woowol.gutenmorgen.processor.Processor;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,5 +17,9 @@ public class ProcessorBO {
 
     public void process(String processorName, String parameter) throws Exception {
         processorMap.get(processorName).process(parameter);
+    }
+
+    public void validateParameter(String processorName, String parameter) throws Exception {
+        processorMap.get(processorName).validateParameter(parameter);
     }
 }

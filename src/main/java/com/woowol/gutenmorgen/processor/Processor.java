@@ -13,6 +13,7 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Field;
 import java.util.*;
 
+@SuppressWarnings("unused")
 @Service
 @Slf4j
 public abstract class Processor<T> {
@@ -22,10 +23,21 @@ public abstract class Processor<T> {
     @SuppressWarnings("unchecked")
     private Class<T> genericClass = (Class<T>) GenericTypeResolver.resolveTypeArgument(getClass(), Processor.class);
 
+    public abstract String getName();
+
     @SuppressWarnings("unchecked")
     public void process(String jsonString) throws Exception {
         process(objectMapper.readValue(jsonString, genericClass));
     }
+
+    public abstract void process(T parameter) throws Exception;
+
+    @SuppressWarnings("unchecked")
+    public void validateParameter(String jsonString) throws Exception {
+        validateParameter(objectMapper.readValue(jsonString, genericClass));
+    }
+
+    public abstract void validateParameter(T parameter) throws Exception;
 
     public List<Map<String, Object>> getParameterInfoList() {
         List<Map<String, Object>> parameterInfoList = new ArrayList<>();
@@ -34,12 +46,12 @@ public abstract class Processor<T> {
             SelectParameter selectParameterAnnotation;
             Map<String, Object> parameterInfo = null;
             if ((textParameterAnnotation = field.getAnnotation(TextParameter.class)) != null) {
-                parameterInfo = new HashMap<String, Object>(){{
+                parameterInfo = new HashMap<String, Object>() {{
                     put("name", textParameterAnnotation.name());
                     put("inputType", "text");
                 }};
             } else if ((selectParameterAnnotation = field.getAnnotation(SelectParameter.class)) != null) {
-                parameterInfo = new HashMap<String, Object>(){{
+                parameterInfo = new HashMap<String, Object>() {{
                     put("name", selectParameterAnnotation.name());
                     put("inputType", "select");
                     put("selectList", Arrays.asList(selectParameterAnnotation.selectList()));
@@ -58,9 +70,6 @@ public abstract class Processor<T> {
         return parameterInfoList;
     }
 
-    public abstract String getName();
-    public abstract void process(T parameter) throws Exception;
-
     @Target(ElementType.FIELD)
     @Retention(RetentionPolicy.RUNTIME)
     public @interface TextParameter {
@@ -71,6 +80,7 @@ public abstract class Processor<T> {
     @Retention(RetentionPolicy.RUNTIME)
     public @interface SelectParameter {
         String name();
+
         String[] selectList();
     }
 }

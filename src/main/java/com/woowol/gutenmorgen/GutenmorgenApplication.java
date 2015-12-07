@@ -14,7 +14,7 @@ import java.util.concurrent.Executors;
 
 @SpringBootApplication
 @EnableScheduling
-public class GutenmorgenApplication implements SchedulingConfigurer{
+public class GutenmorgenApplication implements SchedulingConfigurer {
     public static ConfigurableApplicationContext ctx;
 
     public static void main(String[] args) {
@@ -31,7 +31,7 @@ public class GutenmorgenApplication implements SchedulingConfigurer{
         taskRegistrar.setScheduler(taskExecutor());
     }
 
-    @Bean(destroyMethod="shutdown")
+    @Bean(destroyMethod = "shutdown")
     public Executor taskExecutor() {
         return Executors.newScheduledThreadPool(10);
     }
