@@ -5,7 +5,6 @@ import com.woowol.gutenmorgen.model.Job;
 import com.woowol.gutenmorgen.model.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -29,9 +28,10 @@ public class JobController {
         return new Result(Result.ReturnCode.SUCCESS);
     }
 
-    @RequestMapping(value = "/execute/{jobKey}")
-    public String execute(@PathVariable String jobKey) throws Exception {
-        jobBO.execute(jobKey);
-        return "redirect:/";
+    @RequestMapping(value = "/execute.json}")
+    @ResponseBody
+    public Result execute(Job job) throws Exception {
+        jobBO.execute(job.getJobKey());
+        return new Result(Result.ReturnCode.SUCCESS);
     }
 }

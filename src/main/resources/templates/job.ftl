@@ -137,7 +137,16 @@
             });
         },
         execute: function (jobKey) {
-            location.href = "/job/execute/" + jobKey;
+            $.ajax({
+                data : {"jobKey" : jobKey},
+                url : '/job/execute,
+                success : function() {
+                    location.reload();
+                },
+                error : function(errMsg) {
+                    alert(errMsg);
+                }
+            });
         },
 
         showSavePopup: function (jobKey, name, processor, parameter) {
