@@ -14,10 +14,12 @@
                 <div class="card_title">프로세서</div>
                 <div class="card_content">${processorMap[job.processor].name?html}</div>
             </div>
+            <#if job.parameter! != ''>
             <div class="card">
                 <div class="card_title">파라미터</div>
                 <div class="card_content"><pre>${objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(objectMapper.readValue(job.parameter, object))?html}</pre></div>
             </div>
+            </#if>
         </div>
     </div>
     </#list>
