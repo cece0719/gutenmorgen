@@ -66,7 +66,7 @@ body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fi
     padding: 5px;
 }
 
-.fold_title label {
+.fold_title a {
     height: 30px;
     width: 100%;
     font-size: 20px;
@@ -77,12 +77,7 @@ body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fi
 
 .fold_content {
     border-top: 1px solid rgba(0, 0, 0, 0.2);
-    display: none;
     padding: 5px;
-}
-
-:checked + .fold_content {
-    display: block;
 }
 
 .card {
@@ -105,7 +100,7 @@ body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fi
 .card_content {
     border-top: 1px solid rgba(0, 0, 0, 0.2);
     padding: 5px;
-    overflow: scroll;
+    overflow: auto;
 }
 
 .card_content pre{
