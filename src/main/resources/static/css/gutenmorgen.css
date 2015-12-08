@@ -54,9 +54,12 @@ body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fi
     border-radius: 3px;
     background-color: #fff;
     border: 1px solid rgba(0, 0, 0, 0.2);
-    margin-bottom: 5px;
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
+}
+
+.fold + .fold {
+    margin-top: 5px;
 }
 
 .fold_title {
@@ -87,9 +90,12 @@ body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fi
     border-radius: 3px;
     background-color: #fff;
     border: 1px solid rgba(0, 0, 0, 0.2);
-    margin-bottom: 5px;
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
+}
+
+.card + .card {
+    margin-top: 5px;
 }
 
 .card_title {
