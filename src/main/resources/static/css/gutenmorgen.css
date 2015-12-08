@@ -1,4 +1,4 @@
-body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fieldset, legend, input, textarea, button, select, legend, em, address, a {
+body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fieldset, legend, input, textarea, button, select, legend, em, address, a, label {
     margin: 0;
     padding: 0;
     position: relative;
@@ -58,16 +58,17 @@ body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fi
 }
 
 .fold_title {
-    height:30px;
+    height:40px;
 }
 
 .fold_title label {
     height: 100%;
     width: 100%;
     padding: 5px;
-    font-size: 15px;
-    line-height: 20px;
+    font-size: 20px;
+    line-height: 30px;
     display:block;
+    background-color: #fff;
 }
 
 .fold_content {
