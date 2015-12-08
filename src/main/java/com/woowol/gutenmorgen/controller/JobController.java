@@ -1,6 +1,7 @@
 package com.woowol.gutenmorgen.controller;
 
 import com.woowol.gutenmorgen.bo.JobBO;
+import com.woowol.gutenmorgen.bo.ProcessorBO;
 import com.woowol.gutenmorgen.model.Job;
 import com.woowol.gutenmorgen.model.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class JobController {
     @Autowired
     private JobBO jobBO;
+    @Autowired
+    private ProcessorBO processorBO;
 
     @RequestMapping(value="")
     public String job(Model model) {
         model.addAttribute("jobList", jobBO.findAll());
+        model.addAttribute("processorMap", processorBO.getProcessorMap());
         return "job";
     }
 

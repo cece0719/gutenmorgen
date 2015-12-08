@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="processorMap" type="java.util.Map<String, com.woowol.gutenmorgen.processor.Processor>" -->
 <#-- @ftlvariable name="jobList" type="java.util.List<com.woowol.gutenmorgen.model.Job>" -->
 <#include "common/common.ftl">
 <@layout.main subtitle='JOB'>
@@ -10,11 +11,11 @@
         <div class="fold_content">
             <div class="card">
                 <div class="card_title">프로세서</div>
-                <div class="card_content">${job.processor}</div>
+                <div class="card_content">${processorMap[job.processor].name?html}</div>
             </div>
             <div class="card">
                 <div class="card_title">파라미터</div>
-                <div class="card_content">${job.parameter}</div>
+                <div class="card_content">${job.parameter?html}</div>
             </div>
         </div>
     </div>
