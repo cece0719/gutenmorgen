@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -124,6 +125,26 @@ public class Validate {
     private static void checkMobileNo(String mobile) {
         if (StringUtils.isEmpty(mobile) || mobile.matches("^01(?:0|1[6-9])-(?:\\d{3}|\\d{4})-\\d{4}$")) {
             throw new ResultException(Result.ReturnCode.PARAMETER_ERROR, "잘못된 휴대폰번호 입니다 : " + mobile);
+        }
+    }
+
+    public static void checkSmsMessageLength(String message) {
+        try {
+            if (message.getBytes("EUC-KR").length > 2000) {
+                throw new ResultException(Result.ReturnCode.SMS_MESSAGE_LENGTH_ERROR);
+            }
+        } catch (UnsupportedEncodingException e) {
+            throw new ResultException(e);
+        }
+    }
+
+    public static void checkSmsSubjetLength(String subject) {
+        try {
+            if (subject.getBytes("EUC-KR").length > 40) {
+                throw new ResultException(Result.ReturnCode.SMS_MESSAGE_LENGTH_ERROR);
+            }
+        } catch (UnsupportedEncodingException e) {
+            throw new ResultException(e);
         }
     }
 }

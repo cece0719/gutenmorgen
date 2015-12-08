@@ -1,8 +1,8 @@
 package com.woowol.gutenmorgen.bo;
 
+import com.woowol.gutenmorgen.util.Validate;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.tomcat.util.codec.binary.StringUtils;
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,7 +12,6 @@ import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
@@ -36,61 +35,6 @@ public class SendSmsBO {
     private XmlRpcClient xmlClient;
     private Random random = new Random();
 
-//    private final static String refXmlFormat = "<request>"
-//            + "<sms-id>%s</sms-id>"
-//            + "<access-token>%s</access-token>"
-//            + "<response-format>xml</response-format>"
-//            + "<method>SMS.getStatusByRef</method>"
-//            + "<params>" + "<ref_key>%s</ref_key>" + "</params>"
-//            + "</request>";
-//
-//    private final static String refXmlFormat_all = "<request>"
-//            + "<sms-id>%s</sms-id>"
-//            + "<access-token>%s</access-token>"
-//            + "<response-format>xml</response-format>"
-//            + "<method>SMS.getStatusByRef_all</method>"
-//            + "<params>"
-//            + "<ref_key>%s</ref_key>"
-//            + "</params>"
-//            + "</request>";
-
-//    private final static String reqXmlFormat = "<request>"
-//            + "<sms-id>%s</sms-id>"
-//            + "<access-token>%s</access-token>"
-//            + "<response-format>xml</response-format>"
-//            + "<method>SMS.send</method>"
-//            + "<params>"
-//            + "<send_type>%s</send_type>" + "<ref_key>%s</ref_key>"
-//            + "<subject>%s</subject>" + "<message>%s</message>"
-//            + "<callback>%s</callback>" + "<phone>%s</phone>"
-//            + "<reserve>%s</reserve>"
-//            + "</params>"
-//            + "</request>";
-
-//    private final static String reqXmlFormat2 = "<request>"
-//            + "<sms-id>%s</sms-id>"
-//            + "<access-token>%s</access-token>"
-//            + "<response-format>xml</response-format>"
-//            + "<method>SMS.multi_send</method>"
-//            + "<params>"
-//            + "<send_type>%s</send_type>" + "<ref_key>%s</ref_key>"
-//            + "<subject>%s</subject>" + "<message>%s</message>"
-//            + "<callback>%s</callback>" + "<phone>%s</phone>"
-//            + "<reserve>%s</reserve>"
-//            + "</params>"
-//            + "</request>";
-//
-//    private final static String reserveCancel = "<request>"
-//            + "<sms-id>%s</sms-id>"
-//            + "<access-token>%s</access-token>"
-//            + "<response-format>xml</response-format>"
-//            + "<method>SMS.reservationCancel</method>"
-//            + "<params>"
-//            + "<ref_key>%s</ref_key>" + "<send_type>%s</send_type>"
-//            + "<phonenum>%s</phonenum>"
-//            + "</params>"
-//            + "</request>";
-
     public SendSmsBO() throws MalformedURLException {
         XmlRpcClientConfigImpl xmlClientConfig = new XmlRpcClientConfigImpl();
         xmlClientConfig.setServerURL(new URL(apiUrl));
@@ -98,29 +42,6 @@ public class SendSmsBO {
         xmlClient.setConfig(xmlClientConfig);
     }
 
-    //    private void send(String[] args) throws Exception {
-//        if ("status_by_ref".equals(args[0])) {
-//            callMethod(String.format(refXmlFormat, smsId, getMd5AccessToken(), args[1]));
-//        } else if ("status_by_ref_all".equals(args[0])) {
-//            callMethod(String.format(refXmlFormat_all, smsId, getMd5AccessToken(), args[1]));
-//        } else if ("multi_sms".equals(args[0])) {
-//            args[0] = "sms";
-//            args[2] = StringEscapeUtils.escapeXml11(args[2]);
-//            args[3] = StringEscapeUtils.escapeXml11(args[3]);
-//            callMethod(String.format(reqXmlFormat2, smsId, getMd5AccessToken(), args[0], args[1], args[2], args[3], args[4], args[5], args[6]));
-//        } else if ("multi_lms".equals(args[0])) {
-//            args[0] = "lms";
-//            args[2] = StringEscapeUtils.escapeXml11(args[2]);
-//            args[3] = StringEscapeUtils.escapeXml11(args[3]);
-//            callMethod(String.format(reqXmlFormat2, smsId, getMd5AccessToken(), args[0], args[1], args[2], args[3], args[4], args[5], args[6]));
-//        } else if ("reserveCancel".equals(args[0])) {
-//            callMethod(String.format(reserveCancel, smsId, getMd5AccessToken(), args[1], args[2], args[3]));
-//        } else {
-//            args[2] = StringEscapeUtils.escapeXml11(args[2]);
-//            args[3] = StringEscapeUtils.escapeXml11(args[3]);
-//            callMethod(String.format(reqXmlFormat, smsId, getMd5AccessToken(), args[0], args[1], args[2], args[3], args[4], args[5], args[6]));
-//        }
-//    }
     public void sendSms(List<String> mobileList, String subject, String message) throws Exception {
         for (String mobile : mobileList) {
             sendSms(mobile, subject, message);
@@ -138,12 +59,15 @@ public class SendSmsBO {
     }
 
     public void sendSms(String mobile, String subject, String message) throws Exception {
+        Validate.checkSmsSubjetLength(subject);
+        Validate.checkSmsMessageLength(message);
+        Validate.checkMobileNo(mobile);
+
         String sendType = "sms";                                // 발송 타입 sms or lms
         String refKey = String.valueOf(System.currentTimeMillis());// 결과 확인을 위한 KEY ( 중복되지 않도록 생성하여 전달해 주시기 바랍니다. )
         String reserve = "0";                                    //예약 일자 "2013-07-30 12:00:00" 또는 "0" 0또는 빈값(null)은 즉시 발송
 
-        byte[] b = message.getBytes("EUC-KR");
-        if (b.length > 90) {
+        if (message.getBytes("EUC-KR").length > 90) {
             sendType = "lms";
         }
 
@@ -167,13 +91,6 @@ public class SendSmsBO {
                 "</params>" +
                 "</request>";
         callMethod(sb);
-    }
-
-    private void sendLongSms(String mobile, String s) {
-    }
-
-    private String subStringByByte(byte[] b, int byteLength) throws UnsupportedEncodingException {
-        return new String(b, 0, Math.min(byteLength, b.length), "EUC-KR");
     }
 
     private void callMethod(String s) throws Exception {
