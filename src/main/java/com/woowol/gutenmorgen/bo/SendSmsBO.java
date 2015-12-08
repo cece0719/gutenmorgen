@@ -17,6 +17,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.Random;
 
 @Slf4j
@@ -97,7 +98,7 @@ public class SendSmsBO {
         xmlClient.setConfig(xmlClientConfig);
     }
 
-//    private void send(String[] args) throws Exception {
+    //    private void send(String[] args) throws Exception {
 //        if ("status_by_ref".equals(args[0])) {
 //            callMethod(String.format(refXmlFormat, smsId, getMd5AccessToken(), args[1]));
 //        } else if ("status_by_ref_all".equals(args[0])) {
@@ -120,15 +121,29 @@ public class SendSmsBO {
 //            callMethod(String.format(reqXmlFormat, smsId, getMd5AccessToken(), args[0], args[1], args[2], args[3], args[4], args[5], args[6]));
 //        }
 //    }
+    public void sendSms(List<String> mobileList, String subject, String message) throws Exception {
+        for (String mobile : mobileList) {
+            sendSms(mobile, subject, message);
+        }
+    }
+
+    public void sendSms(List<String> mobileList, String message) throws Exception {
+        for (String mobile : mobileList) {
+            sendSms(mobile, message);
+        }
+    }
 
     public void sendSms(String mobile, String message) throws Exception {
+        sendSms(mobile, "GUTEN MORGEN", message);
+    }
+
+    public void sendSms(String mobile, String subject, String message) throws Exception {
         String sendType = "sms";                                // 발송 타입 sms or lms
         String refKey = String.valueOf(System.currentTimeMillis());// 결과 확인을 위한 KEY ( 중복되지 않도록 생성하여 전달해 주시기 바랍니다. )
-        String subject = "GUTEN MORGEN";                            //  LMS 발송시 제목으로 사용 SMS 발송시는 수신자에게 내용이 보이지 않음.
         String reserve = "0";                                    //예약 일자 "2013-07-30 12:00:00" 또는 "0" 0또는 빈값(null)은 즉시 발송
 
         byte[] b = message.getBytes("EUC-KR");
-        if (b.length>90) {
+        if (b.length > 90) {
             sendType = "lms";
         }
 
