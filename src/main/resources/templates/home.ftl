@@ -4,6 +4,6 @@
         Guten Morgen
     </div>
     <#include "/buildAndDeploy.ftl">
-    <#include "/job.ftl">
+    <#include "/job2.ftl">
     <#include "/schedule.ftl">
 </@layout.default>
