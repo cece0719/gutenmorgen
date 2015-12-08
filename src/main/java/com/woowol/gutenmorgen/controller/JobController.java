@@ -1,5 +1,6 @@
 package com.woowol.gutenmorgen.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowol.gutenmorgen.bo.JobBO;
 import com.woowol.gutenmorgen.bo.ProcessorBO;
 import com.woowol.gutenmorgen.model.Job;
@@ -17,11 +18,15 @@ public class JobController {
     private JobBO jobBO;
     @Autowired
     private ProcessorBO processorBO;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @RequestMapping(value="")
     public String job(Model model) {
         model.addAttribute("jobList", jobBO.findAll());
         model.addAttribute("processorMap", processorBO.getProcessorMap());
+        model.addAttribute("objectMapper", objectMapper);
+        model.addAttribute("object", Object.class);
         return "job";
     }
 

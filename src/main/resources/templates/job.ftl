@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="objectMapper" type="com.fasterxml.jackson.databind.ObjectMapper" -->
 <#-- @ftlvariable name="processorMap" type="java.util.Map<String, com.woowol.gutenmorgen.processor.Processor>" -->
 <#-- @ftlvariable name="jobList" type="java.util.List<com.woowol.gutenmorgen.model.Job>" -->
 <#include "common/common.ftl">
@@ -15,7 +16,7 @@
             </div>
             <div class="card">
                 <div class="card_title">파라미터</div>
-                <div class="card_content">${job.parameter?html}</div>
+                <div class="card_content"><pre>${objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(objectMapper.readValue(job.parameter, object))?html}</pre></div>
             </div>
         </div>
     </div>
