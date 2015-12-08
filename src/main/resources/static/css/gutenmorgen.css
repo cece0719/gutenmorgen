@@ -50,7 +50,7 @@ body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fi
 }
 
 .fold {
-    width:100%;
+    width: 100%;
     border-radius: 3px;
     background-color: #fff;
     border: 1px solid rgba(0, 0, 0, 0.2);
@@ -68,15 +68,36 @@ body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fi
     width: 100%;
     font-size: 20px;
     line-height: 30px;
-    display:block;
+    display: block;
     background-color: #fff;
 }
 
 .fold_content {
     border-top: 1px solid rgba(0, 0, 0, 0.2);
-    display:none;
+    display: none;
+    padding: 5px;
 }
 
-:checked + .fold_content{
+:checked + .fold_content {
     display: block;
+}
+
+.card {
+    width: 100%;
+    border-radius: 3px;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    margin-bottom: 5px;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.card_title {
+    padding: 5px;
+}
+
+.card_content {
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 5px;
+    word-break: break-all;
 }
