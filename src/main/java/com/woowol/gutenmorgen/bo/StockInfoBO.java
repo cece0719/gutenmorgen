@@ -4,14 +4,25 @@ import com.woowol.gutenmorgen.exception.ResultException;
 import com.woowol.gutenmorgen.model.Result;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.List;
 
 @Service
 public class StockInfoBO {
+    public String getSimpleStockInfoText(List<String> stockNameList) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        for (String stockName : stockNameList) {
+            sb.append(getSimpleStockInfoText(stockName));
+            sb.append("\n\n");
+        }
+        return sb.toString().substring(0, sb.length() - 2);
+    }
+
     public String getSimpleStockInfoText(String stockName) throws IOException {
         String code = getStockCodeByStockName(stockName);
 
@@ -23,20 +34,13 @@ public class StockInfoBO {
         String vsYesterdayPrice = rows.get(2).text();
         String vsYesterdayPercent = rows.get(3).text();
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(vsYesterdayPercent.startsWith("-") ? "패!배!의!" : "승!리!의!");
-        for (int i = 0; i < stockName.length(); i++) {
-            sb.append(stockName.substring(i, i + 1));
-            sb.append("!");
-        }
-        sb.append(" ");
-        sb.append(currentPrice);
-        sb.append(" ");
-        sb.append(vsYesterdayPercent.startsWith("-") ? "↓" : "↑");
-        sb.append(vsYesterdayPrice);
-        sb.append(" ");
-        sb.append(vsYesterdayPercent);
-        return sb.toString();
+        String sb = stockName + " : " +
+                currentPrice + "\n" +
+                (vsYesterdayPercent.startsWith("-") ? "↓" : "↑") +
+                vsYesterdayPrice +
+                ", " +
+                vsYesterdayPercent;
+        return sb;
     }
 
     private String getStockCodeByStockName(String stockName) throws IOException {
@@ -49,9 +53,13 @@ public class StockInfoBO {
             throw new ResultException(Result.ReturnCode.PARAMETER_ERROR, "적합한 종목명이 아닙니다 : " + stockName);
         }
 
-        if (stockName.equals(stockArray[1])) {
-            return stockArray[0].replace("A", "");
+        for (Element row : rows2) {
+            String[] stockArray2 = row.text().split(" ");
+            if (stockName.equals(stockArray2[1])) {
+                return stockArray2[0].replace("A", "");
+            }
         }
+
         throw new ResultException(Result.ReturnCode.PARAMETER_ERROR, "적합한 종목명이 아닙니다 : " + stockName);
     }
 }

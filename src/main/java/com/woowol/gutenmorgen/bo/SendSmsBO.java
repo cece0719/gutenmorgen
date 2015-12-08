@@ -12,6 +12,7 @@ import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
@@ -121,13 +122,15 @@ public class SendSmsBO {
 //    }
 
     public void sendSms(String mobile, String message) throws Exception {
-        byte[] b = message.getBytes("EUC-KR");
-        message = new String(b, 0, Math.min(90, b.length), "EUC-KR");
-
         String sendType = "sms";                                // 발송 타입 sms or lms
         String refKey = String.valueOf(System.currentTimeMillis());// 결과 확인을 위한 KEY ( 중복되지 않도록 생성하여 전달해 주시기 바랍니다. )
-        String subject = "_TITLE_";                            //  LMS 발송시 제목으로 사용 SMS 발송시는 수신자에게 내용이 보이지 않음.
+        String subject = "GUTEN MORGEN";                            //  LMS 발송시 제목으로 사용 SMS 발송시는 수신자에게 내용이 보이지 않음.
         String reserve = "0";                                    //예약 일자 "2013-07-30 12:00:00" 또는 "0" 0또는 빈값(null)은 즉시 발송
+
+        byte[] b = message.getBytes("EUC-KR");
+        if (b.length>90) {
+            sendType = "lms";
+        }
 
         subject = StringEscapeUtils.escapeXml11(subject);
         message = StringEscapeUtils.escapeXml11(message);
@@ -149,6 +152,13 @@ public class SendSmsBO {
                 "</params>" +
                 "</request>";
         callMethod(sb);
+    }
+
+    private void sendLongSms(String mobile, String s) {
+    }
+
+    private String subStringByByte(byte[] b, int byteLength) throws UnsupportedEncodingException {
+        return new String(b, 0, Math.min(byteLength, b.length), "EUC-KR");
     }
 
     private void callMethod(String s) throws Exception {

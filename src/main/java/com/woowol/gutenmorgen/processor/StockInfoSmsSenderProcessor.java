@@ -34,11 +34,9 @@ public class StockInfoSmsSenderProcessor extends Processor<Parameter> {
 
     @Override
     public void process(Parameter parameter) throws Exception {
-        for (String stock : parameter.getStockList()) {
-            for (String mobile : parameter.getMobileList()) {
-                String stockInfoText = stockInfoBO.getSimpleStockInfoText(stock);
-                sendSmsBO.sendSms(mobile, stockInfoText);
-            }
+        for (String mobile : parameter.getMobileList()) {
+            String stockInfoText = stockInfoBO.getSimpleStockInfoText(parameter.getStockList());
+            sendSmsBO.sendSms(mobile, stockInfoText);
         }
     }
 

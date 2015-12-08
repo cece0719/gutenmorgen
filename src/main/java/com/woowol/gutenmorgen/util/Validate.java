@@ -5,6 +5,7 @@ import com.woowol.gutenmorgen.model.Result;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -79,8 +80,11 @@ public class Validate {
                 throw new ResultException(Result.ReturnCode.PARAMETER_ERROR, "적합한 종목명이 아닙니다 : " + stockName);
             }
 
-            if (stockName.equals(stockArray[1])) {
-                return;
+            for (Element row : rows2) {
+                String[] stockArray2 = row.text().split(" ");
+                if (stockName.equals(stockArray2[1])) {
+                    return;
+                }
             }
             throw new ResultException(Result.ReturnCode.PARAMETER_ERROR, "적합한 종목명이 아닙니다 : " + stockName);
         } catch (IOException e) {
@@ -108,7 +112,7 @@ public class Validate {
     }
 
     public static void checkMobileNo(List<String> mobileList) {
-        checkMobileNo((String[]) mobileList.toArray());
+        checkMobileNo(mobileList.toArray(new String[mobileList.size()]));
     }
 
     public static void checkMobileNo(String... mobileArray) {
