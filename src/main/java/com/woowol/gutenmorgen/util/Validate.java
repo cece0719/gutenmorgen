@@ -130,7 +130,7 @@ public class Validate {
 
     public static void checkSmsMessageLength(String message) {
         try {
-            if (message.getBytes("EUC-KR").length > 2000) {
+            if (message == null || message.getBytes("EUC-KR").length < 1 || message.getBytes("EUC-KR").length > 2000) {
                 throw new ResultException(Result.ReturnCode.SMS_MESSAGE_LENGTH_ERROR);
             }
         } catch (UnsupportedEncodingException e) {
@@ -138,9 +138,9 @@ public class Validate {
         }
     }
 
-    public static void checkSmsSubjetLength(String subject) {
+    public static void checkSmsSubjectLength(String subject) {
         try {
-            if (subject.getBytes("EUC-KR").length > 40) {
+            if (subject == null || subject.getBytes("EUC-KR").length < 1 || subject.getBytes("EUC-KR").length > 40) {
                 throw new ResultException(Result.ReturnCode.SMS_MESSAGE_LENGTH_ERROR);
             }
         } catch (UnsupportedEncodingException e) {

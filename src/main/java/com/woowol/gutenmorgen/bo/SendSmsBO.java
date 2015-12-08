@@ -59,17 +59,13 @@ public class SendSmsBO {
     }
 
     public void sendSms(String mobile, String subject, String message) throws Exception {
-        Validate.checkSmsSubjetLength(subject);
+        Validate.checkSmsSubjectLength(subject);
         Validate.checkSmsMessageLength(message);
         Validate.checkMobileNo(mobile);
 
-        String sendType = "sms";                                // 발송 타입 sms or lms
+        String sendType = (message.getBytes("EUC-KR").length > 90)?"lms":"sms";                                // 발송 타입 sms or lms
         String refKey = String.valueOf(System.currentTimeMillis());// 결과 확인을 위한 KEY ( 중복되지 않도록 생성하여 전달해 주시기 바랍니다. )
         String reserve = "0";                                    //예약 일자 "2013-07-30 12:00:00" 또는 "0" 0또는 빈값(null)은 즉시 발송
-
-        if (message.getBytes("EUC-KR").length > 90) {
-            sendType = "lms";
-        }
 
         subject = StringEscapeUtils.escapeXml11(subject);
         message = StringEscapeUtils.escapeXml11(message);
