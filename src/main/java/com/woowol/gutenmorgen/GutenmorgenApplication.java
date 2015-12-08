@@ -15,10 +15,8 @@ import java.util.concurrent.Executors;
 @SpringBootApplication
 @EnableScheduling
 public class GutenmorgenApplication implements SchedulingConfigurer {
-    public static ConfigurableApplicationContext ctx;
-
     public static void main(String[] args) {
-        ctx = SpringApplication.run(GutenmorgenApplication.class, args);
+        SpringApplication.run(GutenmorgenApplication.class, args);
     }
 
     @Bean
