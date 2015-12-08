@@ -58,13 +58,12 @@ body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fi
 }
 
 .fold_title {
-    height:40px;
+    padding: 5px;
 }
 
 .fold_title label {
-    height: 100%;
+    height: 30px;
     width: 100%;
-    padding: 5px;
     font-size: 20px;
     line-height: 30px;
     display:block;
