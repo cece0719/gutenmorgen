@@ -29,23 +29,25 @@
 <script type="text/javascript">
     $job = {
         delete: function (jobKey) {
-            $.ajax({
-                data: {"jobKey": jobKey},
-                url: '/job/delete.json',
-                success: function () {
-                    location.reload();
-                },
-                error: function (errMsg) {
-                    alert(errMsg);
-                }
-            });
+            if (confirm('삭제 하시겠습니까?')) {
+                $.ajax({
+                    data: {"jobKey": jobKey},
+                    url: '/job/delete.json',
+                    success: function () {
+                        location.reload();
+                    },
+                    error: function (errMsg) {
+                        alert(errMsg);
+                    }
+                });
+            }
         },
         execute: function (jobKey) {
             $.ajax({
                 data: {"jobKey": jobKey},
                 url: '/job/execute.json',
                 success: function () {
-                    location.reload();
+                    alert('성공');
                 },
                 error: function (errMsg) {
                     alert(errMsg);
