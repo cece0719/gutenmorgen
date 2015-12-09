@@ -21,7 +21,7 @@
                     </div>
                 </div>
             </#if>
-            <button type="button" class="card" onclick="$job.execute('${job.jobKey?html}')')">실행</button>
+            <button type="button" class="card" onclick="$job.execute('${job.jobKey?html}')">실행</button>
             <button type="button" class="card" onclick="$job.delete('${job.jobKey?html}')">삭제</button>
         </div>
     </div>
