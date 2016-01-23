@@ -2,7 +2,6 @@ package com.woowol.gutenmorgen.exception;
 
 import com.woowol.gutenmorgen.model.Result;
 import com.woowol.gutenmorgen.model.Result.ReturnCode;
-import lombok.Getter;
 
 public class ResultException extends RuntimeException {
     private static final long serialVersionUID = 1L;

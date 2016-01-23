@@ -1,21 +1,16 @@
 package com.woowol.gutenmorgen.util;
 
+import com.woowol.gutenmorgen.bo.StockInfoBO;
 import com.woowol.gutenmorgen.exception.ResultException;
 import com.woowol.gutenmorgen.model.Result;
 import org.apache.commons.lang3.StringUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
@@ -25,10 +20,12 @@ import java.util.Locale;
 @Component
 public class Validate {
     private static Environment env;
+    private static StockInfoBO stockInfoBO;
 
     @Autowired
-    public Validate(Environment env) {
+    public Validate(Environment env, StockInfoBO stockInfoBO) {
         Validate.env = env;
+        Validate.stockInfoBO = stockInfoBO;
     }
 
     public static void checkNotLocal() {
@@ -71,26 +68,7 @@ public class Validate {
     }
 
     public static void checkStockName(String stockName) {
-        try {
-            Document doc1 = Jsoup.connect("http://www.krx.co.kr/por_kor/popup/JHPKOR13008_12.jsp?market_gubun=allVal&mkt_typ=S&word=" + URLEncoder.encode(stockName, "UTF-8")).get();
-            Elements rows2 = doc1.select("table#tbl1>tbody>tr");
-
-            String[] stockArray = rows2.get(0).text().split(" ");
-
-            if (stockArray.length < 3) {
-                throw new ResultException(Result.ReturnCode.PARAMETER_ERROR, "적합한 종목명이 아닙니다 : " + stockName);
-            }
-
-            for (Element row : rows2) {
-                String[] stockArray2 = row.text().split(" ");
-                if (stockName.equals(stockArray2[1])) {
-                    return;
-                }
-            }
-            throw new ResultException(Result.ReturnCode.PARAMETER_ERROR, "적합한 종목명이 아닙니다 : " + stockName);
-        } catch (IOException e) {
-            throw new ResultException(e);
-        }
+        stockInfoBO.getStockCodeByStockName(stockName);
     }
 
     public static void checkEmailAddr(List<String> emailList) {

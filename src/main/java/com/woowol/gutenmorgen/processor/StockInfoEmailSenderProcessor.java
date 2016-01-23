@@ -34,7 +34,8 @@ public class StockInfoEmailSenderProcessor extends Processor<Parameter> {
     public void process(Parameter parameter) throws Exception {
         for (String stock : parameter.getStockList()) {
             for (String email : parameter.getEmailList()) {
-                String stockInfoText = stockInfoBO.getSimpleStockInfoText(stock);
+                String stockInfoText = " " + stockInfoBO.getSimpleStockInfoText(stock);
+                System.out.println(stockInfoText);
                 sendMailBO.sendMail(email, stockInfoText, "");
             }
         }

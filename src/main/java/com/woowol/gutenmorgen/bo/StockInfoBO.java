@@ -1,19 +1,25 @@
 package com.woowol.gutenmorgen.bo;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowol.gutenmorgen.exception.ResultException;
 import com.woowol.gutenmorgen.model.Result;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class StockInfoBO {
+    @Autowired
+    private ObjectMapper objectMapper;
+
     public String getSimpleStockInfoText(List<String> stockNameList) throws IOException {
         StringBuilder sb = new StringBuilder();
         for (String stockName : stockNameList) {
@@ -43,20 +49,21 @@ public class StockInfoBO {
         return sb;
     }
 
-    private String getStockCodeByStockName(String stockName) throws IOException {
-        Document doc1 = Jsoup.connect("http://www.krx.co.kr/por_kor/popup/JHPKOR13008_12.jsp?market_gubun=allVal&mkt_typ=S&word=" + URLEncoder.encode(stockName, "UTF-8")).get();
-        Elements rows2 = doc1.select("table#tbl1>tbody>tr");
-
-        String[] stockArray = rows2.get(0).text().split(" ");
-
-        if (stockArray.length < 3) {
-            throw new ResultException(Result.ReturnCode.PARAMETER_ERROR, "적합한 종목명이 아닙니다 : " + stockName);
+    public String getStockCodeByStockName(String stockName) {
+        String body = null;
+        List<List<List<List<String>>>> list;
+        try {
+            body = Jsoup.connect("http://ac.finance.naver.com:11002/ac?st=1&r_lt=1&q=" + URLEncoder.encode(stockName, "UTF-8")).ignoreContentType(true).execute().body();
+            list = (List<List<List<List<String>>>>) ((Map<String, Object>) objectMapper.readValue(body, new TypeReference<Map<String, Object>>() {})).get("items");
+        } catch (IOException e) {
+            throw new ResultException(e);
         }
 
-        for (Element row : rows2) {
-            String[] stockArray2 = row.text().split(" ");
-            if (stockName.equals(stockArray2[1])) {
-                return stockArray2[0].replace("A", "");
+        for (List<List<List<String>>> list2 : list) {
+            for (List<List<String>> list3 : list2) {
+                if (stockName.equals(list3.get(1).get(0))) {
+                    return list3.get(0).get(0);
+                }
             }
         }
 
