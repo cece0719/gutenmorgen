@@ -17,6 +17,11 @@ body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fi
     background-color: #eee;
 }
 
+button {
+    height: 30px;
+    font-size:20px;
+}
+
 .header {
     background-color: #f5f5f5;
     border-bottom: 1px solid #ddd
